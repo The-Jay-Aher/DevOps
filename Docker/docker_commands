@@ -9,3 +9,6 @@ Docker Commands -
 7. docker ps -a - Shows the complete history of which container is started and what happened
 8. docker insprect <image name> / docker inspect <id> - Shows all the details about the image
 9. docker logs <id> - Shows all the commands ran during an seesion of an image
+
+
+This is added to test the wokring of git push
