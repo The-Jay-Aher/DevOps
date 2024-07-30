@@ -1,2 +1,3 @@
 # DevOps
-The DevOps Repositry
+
+The DevOps Repository

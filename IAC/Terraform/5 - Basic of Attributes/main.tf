@@ -17,5 +17,5 @@ resource "aws_eip" "IP1" {
 
 resource "aws_instance" "Instance1" {
   instance_type = "t2.micro"
-  ami = "ami-"
+  ami = "ami-068e0f1a600cd311c"
 }
