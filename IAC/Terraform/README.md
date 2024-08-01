@@ -79,3 +79,10 @@ When using count, you can also make use of `count.index` which allows better fle
 1 -> Second EC2 Instance
 2 -> Third EC2 Instance
 
+**Enhancing with count index**
+
+You can use the `count.index` to iterate through the list to have more customization
+
+```
+
+```
