@@ -13,7 +13,7 @@ variable "list" {
 }
 
 resource "aws_instance" "myEC2" {
-  ami = "ami-"
+  ami = "ami-068e0f1a600cd311c"
   instance_type = var.list[2]
   # instance_type = var.types["us-west-2"]
 }
