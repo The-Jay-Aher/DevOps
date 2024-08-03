@@ -117,4 +117,28 @@ File function can reduce the overall Terraform code size by loading contents fro
 | Collection Functions | element, keys, length, merge, sort       |
 | Filesystem Functions | file, filebase64, dirname                |
 
+## Local Values
 
+Local Values are similar to variables in a sense that it allows you to store data centrally and that can be referenced in multiple parts of configuration.
+
+**Additional Benefits of Locals** - You can add expressions to locals, which allows you to compute values dynamically
+
+**Locals v/s Variables** -
+
+-   Variable value can be defined in wide variety of places like `terraform.tfvars`, `ENV Variables`, `CLI` and so on.
+-   Locals are more of a private resource. You have to directly modify the source code.
+-   Locals are used when you want to avoid repeating the same expression multiple times.
+
+**Important Points** -
+
+-   Local values are often just referred as just `locals`
+-   Local values are created by a `locals` block (plural), but you reference them as attributes on an object `local` (singular)
+
+## Data Sources
+
+- Data sources allow Terraform to ` use / fetch information outside information of Terraform`
+- `${path.module}` returns the current file system path where your code is located 
+- A data source is accessed via a special kind of resource known as `data resource`, declared using data block;
+- Following data block requests that Terraform read from a given data source("aws_instance") and export the result under the given local name("foo")
+
+**Filter Structure** - Within the body(between { and } ) are query constraints defined by the data source 

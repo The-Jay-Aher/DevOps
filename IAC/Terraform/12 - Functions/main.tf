@@ -13,3 +13,4 @@ resource "aws_iam_user_policy" "this_policy" {
   # policy = jsonencode()
   policy = file("./iam-user-policy.txt")
 }
+
