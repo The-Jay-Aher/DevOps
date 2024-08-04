@@ -146,3 +146,47 @@ condition ? true_val : false_val
 -   You can set the `TF_LOG` to one of the log levels `TRACE`, `DEBUG`, `INFO`, `WARN` or `ERROR` to change the verbosity of the logs
 -   `TRACE` is the most verbose and it is the default if `TF_LOG` is set to something other than a log level name
 -   To persist log output you can set `TF_LOG_PATH` in order to force the log to always be appended to a specific file when logging is enabled
+
+## Load Order & Semantics
+
+-   Terraform generally loads all the configuration files within the directory specified in the alphabetic order
+-   The files loaded must end in either `.tf` or `.tf.json` to specify the format thats in use
+
+## Dynamic Blocks
+
+-   Dynamic Blocks allows us to dynamically construct repeatable nested blocks which is supported inside resource, data, provider, and provisioner block
+
+**Iterators** -
+
+-   The iterator argument(optional) sets the name of a temporary variable that represents the current element of the complex value.
+-   If omitted, the name of the variable defaults to the label of the dynamic block("ingress" in the above example)
+
+## Terraform Validate
+
+-   Terraform validate primarily checks whether a configuration is syntactically valid.
+-   It can check various aspects including unsupported arguments, undeclared variables and others
+
+## Terraform Taint
+
+**Understanding Use-Case**
+
+-   Users may have made a lot of manual changes(both infrastructure and inside the server). Two ways to deal to with this: Import Changes into Terraform / Delete and Recreate the resource.
+
+**Recreating the resource**
+
+-   The `-replace` option with `terraform apply` to force Terraform to replace an object even though there are no configuration changes that would require it.
+
+**Points to Note**
+
+-   Similar kind of functionality was achieved using `terraform taint` command in the older versions of terraform
+-   For Terraform v15.2.0 and later, HashiCorp recommended using the `-replace` option with `terraform apply`.
+
+**Splat Expression**
+
+-   Allows us to get a list of all the attributes.
+
+## Terraform Graph
+
+-   Terraform graph refers to a `visual representation of the dependency relationships` between resources defined in your Terraform configuration
+-   Terraform graphs are a valuable tool for visualization and understanding the relationships between resources in your infrastructure with Terraform.
+-   It can improve your overall workflow by aiding in planning, debugging, and managing complex infrastructure configurations
