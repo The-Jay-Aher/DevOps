@@ -14,18 +14,18 @@ provider "aws" {
 
 resource "aws_instance" "myEC2" {
   instance_type = "t2.micro"
-  ami = "ami-068e0f1a600cd311c"
-  count = 2
-  
+  ami           = "ami-068e0f1a600cd311c"
+  count         = 2
+
   tags = {
-    Name = "Terraform-Server-${count.index + 1  }"
+    Name = "Terraform-Server-${count.index + 1}"
   }
 }
 
 # There is a difference in Instance(single) and Instances(multiple)
 data "aws_instance" "random" {
   filter {
-    name = "tag:Team"
-    values = [ "Production" ]
+    name   = "tag:Team"
+    values = ["Production"]
   }
 }

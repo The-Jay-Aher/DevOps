@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "= 5.60.0"
     }
   }
@@ -20,7 +20,7 @@ variable "tags" {
 
 locals {
   default = {
-    Team = "security-team"
+    Team         = "security-team"
     CreationDate = "date-${formatdate("DD=MM-YYYY", timestamp())}"
   }
 }

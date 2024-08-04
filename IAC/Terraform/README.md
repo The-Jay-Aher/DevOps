@@ -52,11 +52,11 @@ Terraform loads variables in the following order, with the later sources taking 
 
 ### Use Case
 
-Sometimes you want to manage several similar objects (like a fixed pool of compute instances) without writing a separate block for each one.
+-   Sometimes you want to manage several similar objects (like a fixed pool of compute instances) without writing a separate block for each one.
 
 ### Count Argument
 
-The count argument accepts a whole number, and creates that many instances of the resource.
+-   The count argument accepts a whole number, and creates that many instances of the resource.
 
 ```terraform
 resource "aws_instance" "myEC2" {
@@ -68,24 +68,24 @@ resource "aws_instance" "myEC2" {
 
 ### Challenges with Count
 
-1. The instances created through count and identical copies, but you might want to customize certain properties for each one.
-2. For many resources, the exact copy may not be required and will not work. E.g. - IAM User
+-   The instances created through count and identical copies, but you might want to customize certain properties for each one.
+-   For many resources, the exact copy may not be required and will not work. E.g. - IAM User
 
 ## Introducing Count Index
 
-When using count, you can also make use of `count.index` which allows better flexibility. This attribute holds a distinct index number, starting from 0, that uniquely identifies each index created by count meta-argument.
+-   When using count, you can also make use of `count.index` which allows better flexibility. This attribute holds a distinct index number, starting from 0, that uniquely identifies each index created by count meta-argument.
 
-0 -> First EC2 Instance
-1 -> Second EC2 Instance
-2 -> Third EC2 Instance
+-   `0` -> First EC2 Instance
+-   `1` -> Second EC2 Instance
+-   `2` -> Third EC2 Instance
 
 ### Enhancing with count index
 
-You can use the `count.index` to iterate through the list to have more customization
+-   You can use the `count.index` to iterate through the list to have more customization
 
 ## Conditional Expressions
 
-Conditional Expression in Terraform allow you to choose between two values based on a condition
+-   Conditional Expression in Terraform allow you to choose between two values based on a condition
 
 Syntax -
 
@@ -93,22 +93,20 @@ Syntax -
 condition ? true_val : false_val
 ```
 
-In conditional expressions, when we give no default value to the variable and have `"" ? "t2.micro" : "t2.nano"`, here the output will be `t2.micro`.
-
-You can also use conditional expression with multiple variables. E.g. -
-`instance_type = var.environment == "production" && var.region == "us-east-1" ? "t2.micro" : "t2.nano"`
+-   In conditional expressions, when we give no default value to the variable and have `"" ? "t2.micro" : "t2.nano"`, here the output will be `t2.micro`.
+-   You can also use conditional expression with multiple variables. E.g. -
+    `instance_type = var.environment == "production" && var.region == "us-east-1" ? "t2.micro" : "t2.nano"`
 
 ## Functions
 
 ### Introducing Terraform Console
 
-Terraform console provides an interactive environment specifically designed to test functions and experiment with expressions before integrating them into your main code.
-
-Command - `terraform console`
+-   Terraform console provides an interactive environment specifically designed to test functions and experiment with expressions before integrating them into your main code.
+-   Command - `terraform console`
 
 **Importance of File Function**
 
-File function can reduce the overall Terraform code size by loading contents from external sources during Terraform operations.
+-   File function can reduce the overall Terraform code size by loading contents from external sources during Terraform operations.
 
 | Function Categories  | Functions Available                      |
 | -------------------- | ---------------------------------------- |
@@ -119,9 +117,8 @@ File function can reduce the overall Terraform code size by loading contents fro
 
 ## Local Values
 
-Local Values are similar to variables in a sense that it allows you to store data centrally and that can be referenced in multiple parts of configuration.
-
-**Additional Benefits of Locals** - You can add expressions to locals, which allows you to compute values dynamically
+-   Local Values are similar to variables in a sense that it allows you to store data centrally and that can be referenced in multiple parts of configuration.
+-   **Additional Benefits of Locals** - You can add expressions to locals, which allows you to compute values dynamically
 
 **Locals v/s Variables** -
 
@@ -136,9 +133,16 @@ Local Values are similar to variables in a sense that it allows you to store dat
 
 ## Data Sources
 
-- Data sources allow Terraform to ` use / fetch information outside information of Terraform`
-- `${path.module}` returns the current file system path where your code is located 
-- A data source is accessed via a special kind of resource known as `data resource`, declared using data block;
-- Following data block requests that Terraform read from a given data source("aws_instance") and export the result under the given local name("foo")
+-   Data sources allow Terraform to ` use / fetch information outside information of Terraform`
+-   `${path.module}` returns the current file system path where your code is located
+-   A data source is accessed via a special kind of resource known as `data resource`, declared using data block;
+-   Following data block requests that Terraform read from a given data source("aws_instance") and export the result under the given local name("foo")
 
-**Filter Structure** - Within the body(between { and } ) are query constraints defined by the data source 
+**Filter Structure** - Within the body(between { and } ) are query constraints defined by the data source
+
+## Debugging in Terraform
+
+-   Terraform has detailed logs which can be enabled by setting the `TF_LOG` environment variable to any value
+-   You can set the `TF_LOG` to one of the log levels `TRACE`, `DEBUG`, `INFO`, `WARN` or `ERROR` to change the verbosity of the logs
+-   `TRACE` is the most verbose and it is the default if `TF_LOG` is set to something other than a log level name
+-   To persist log output you can set `TF_LOG_PATH` in order to force the log to always be appended to a specific file when logging is enabled
