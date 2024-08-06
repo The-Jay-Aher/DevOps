@@ -190,3 +190,25 @@ condition ? true_val : false_val
 -   Terraform graph refers to a `visual representation of the dependency relationships` between resources defined in your Terraform configuration
 -   Terraform graphs are a valuable tool for visualization and understanding the relationships between resources in your infrastructure with Terraform.
 -   It can improve your overall workflow by aiding in planning, debugging, and managing complex infrastructure configurations
+
+## Apply from Plan File
+
+-   Terraform allows you to saving a plan to a file
+-   Command - `terraform plan -out ec2.plan`
+
+-   You can run the `terraform apply` by referencing a plan file.
+-   This ensures the infrastructure state remains exactly as shown in the plan to ensure consistency
+-   Command - `terraform apply ec2.plan`
+
+**Exploring terraform plan file** 
+- You can use `terraform show` command to read the contents in detail
+- You can't read the file through file explorer, since it's a binary file
+
+**Use-Case of SAving Plan to a File**
+- Many organizations require documented proof of planned changes before implementation
+
+
+## Terraform Output
+
+- The terraform output command is used to extract the value of an output variable from the state file
+- 
