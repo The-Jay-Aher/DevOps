@@ -1,7 +1,7 @@
 resource "aws_iam_user" "lb" {
-  name = "iam-user-${count.index}"
+  name  = "iam-user-${count.index}"
   count = 3
-  path = "/system/"
+  path  = "/system/"
 }
 
 output "iam_names" {

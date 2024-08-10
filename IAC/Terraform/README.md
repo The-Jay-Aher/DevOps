@@ -200,15 +200,43 @@ condition ? true_val : false_val
 -   This ensures the infrastructure state remains exactly as shown in the plan to ensure consistency
 -   Command - `terraform apply ec2.plan`
 
-**Exploring terraform plan file** 
-- You can use `terraform show` command to read the contents in detail
-- You can't read the file through file explorer, since it's a binary file
+**Exploring terraform plan file**
+
+-   You can use `terraform show` command to read the contents in detail
+-   You can't read the file through file explorer, since it's a binary file
 
 **Use-Case of SAving Plan to a File**
-- Many organizations require documented proof of planned changes before implementation
 
+-   Many organizations require documented proof of planned changes before implementation
 
 ## Terraform Output
 
-- The terraform output command is used to extract the value of an output variable from the state file
-- 
+-   The terraform output command is used to extract the value of an output variable from the state file
+
+## Terraform Settings
+
+-   We can use the provider block to define various aspects of the provider, like region, credentials and so on.
+-   **Specific Version to run your code** - In a Terraform project, your code might require a specific set of version to run
+-   Terraform settings are used to configure project-specific Terraform behaviors, such as requiring a minimum Terraform version to apply your configuration.
+-   Terraform settings are gathered together into `terraform blocks`
+
+### Use Case
+
+1. Specifying a required terraform version -
+    - If your code is compatible with specific versions of Terraform, you can use the `required_version` block to add your constraints
+2. Specifying Provider Requirements -
+    - The `required_providers` block can be used to specify all of the providers required by your terraform code.
+3. Flexibility in Settings block -
+    - There are vide variety of options that can be specified in the Terraform block.
+
+## Challenges with Larger Infrastructure
+
+-   When you have a larger infrastructure, you will face issue related to API limits for provider.
+-   Switch to a smaller configuration were each can be applied independently.
+-   1st way -
+    -   We can prevent terraform from querying the current state during operations like `terraform plan`. This can be achieved with the `terraform plan -refresh=false` flag
+-   2nd Way -
+    -   Specify the target
+    -   The `terraform plan -refesh=false -target=aws_security_group.allow_ssh_conn` flag can be used to target a specific resource
+    -   Generally used as a means to operate on isolated portions of very large configurations
+    -   The `~` sign means that there is an update going on in that place
