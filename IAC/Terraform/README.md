@@ -237,6 +237,10 @@ condition ? true_val : false_val
     -   We can prevent terraform from querying the current state during operations like `terraform plan`. This can be achieved with the `terraform plan -refresh=false` flag
 -   2nd Way -
     -   Specify the target
-    -   The `terraform plan -refesh=false -target=aws_security_group.allow_ssh_conn` flag can be used to target a specific resource
+    -   The `terraform plan -refresh=false -target=aws_security_group.allow_ssh_conn` flag can be used to target a specific resource
     -   Generally used as a means to operate on isolated portions of very large configurations
     -   The `~` sign means that there is an update going on in that place
+
+## Zipmap Function
+
+- The zipmap function constructs a map from a list of keys and corresponding list of values
