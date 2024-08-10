@@ -109,15 +109,15 @@ condition ? true_val : false_val
 -   File function can reduce the overall Terraform code size by loading contents from external sources during Terraform operations.
 
 | Function Categories  | Functions Available                      |
-| -------------------- | ---------------------------------------- |
-| Numeric Functions    | abs, ceil, floor, max, min               |
-| String Functions     | concat, replace, split, tolower, toupper |
+| :------------------: | ---------------------------------------- |
+|  Numeric Functions   | abs, ceil, floor, max, min               |
+|   String Functions   | concat, replace, split, tolower, toupper |
 | Collection Functions | element, keys, length, merge, sort       |
 | Filesystem Functions | file, filebase64, dirname                |
 
 ## Local Values
 
--   Local Values are similar to variables in the sense that they allow you to store data centrally and that can be referenced in multiple parts of the  configuration.
+-   Local Values are similar to variables in the sense that they allow you to store data centrally and that can be referenced in multiple parts of the configuration.
 -   **Additional Benefits of Locals** - You can add expressions to locals, which allows you to compute values dynamically
 
 **Locals v/s Variables** -
@@ -163,7 +163,7 @@ condition ? true_val : false_val
 
 ## Terraform Validate
 
--   `terraform validate`  primarily checks whether a configuration is syntactically valid.
+-   `terraform validate` primarily checks whether a configuration is syntactically valid.
 -   It can check various aspects including unsupported arguments, undeclared variables and others
 
 ## Terraform Taint
@@ -243,4 +243,18 @@ condition ? true_val : false_val
 
 ## Zipmap Function
 
-- The zipmap function constructs a map from a list of keys and corresponding list of values
+-   The zipmap function constructs a map from a list of keys and a corresponding list of values
+-   Command - `zipmap(keyslist, valueslist)`
+-   **Simple Use Case** -
+    -   You are creating multiple IAM users.
+    -   You need to output which contains direct mapping of the IAM names and ARNs.
+
+## Comment in Terraform
+
+-   The terraform language supports 3 different syntaxes for comments:
+
+|   Type    | Description                                                                       |
+| :-------: | --------------------------------------------------------------------------------- |
+|     #     | begins a single-line comment, ending at the end of the line (recommended over //) |
+|    //     | also begin as a single-line comment, as an alternative to #                       |
+| /_ and _/ | are start and end delimiters for a comment that might span over multiple lines    |
