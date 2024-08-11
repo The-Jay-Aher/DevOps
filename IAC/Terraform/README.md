@@ -21,6 +21,7 @@ Terraform loads variables in the following order, with the later sources taking 
 5. Any `-var` or `-var-file` options in the command line
 
 5 -> Highest Precedence
+
 1 -> Lowest Precedence
 
 ## Data Types in Terraform
