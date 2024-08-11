@@ -37,10 +37,9 @@ Terraform loads variables in the following order, with the later sources taking 
 
     ```terraform
         variable "my-list" {
-        type = "list"
-        default = ["Mumbai", "Bangalore", "Delhi"]
+            type    = list(string)
+            default = ["Mumbai", "Bangalore", "Delhi"]
         }
-
     ```
 
 -   set
@@ -60,16 +59,16 @@ Terraform loads variables in the following order, with the later sources taking 
 
 ```terraform
 resource "aws_instance" "myEC2" {
-  ami = "ami-068e0f1a600cd311c"
+  ami           = "ami-068e0f1a600cd311c"
   instance_type = "t2.micro"
-  count = 3
+  count         = 3
 }
 ```
 
 ### Challenges with Count
 
 -   The instances are created through count and identical copies, but you might want to customize certain properties for each one.
--   The exact copy may not be required for many resources and will not work. E.g. - IAM User
+-   The exact copy may not be required for many resources and will not work. E.g. - IAM User.
 
 ## Introducing Count Index
 
@@ -81,11 +80,11 @@ resource "aws_instance" "myEC2" {
 
 ### Enhancing with count index
 
--   You can use the `count.index` to iterate through the list to have more customization
+-   You can use the `count.index` to iterate through the list to have more customization.
 
 ## Conditional Expressions
 
--   Conditional Expression in Terraform allows you to choose between two values based on a condition
+-   Conditional Expression in Terraform allows you to choose between two values based on a condition.
 
 Syntax -
 
@@ -108,17 +107,17 @@ condition ? true_val : false_val
 
 -   File function can reduce the overall Terraform code size by loading contents from external sources during Terraform operations.
 
-| Function Categories  | Functions Available                      |
-| :------------------: | ---------------------------------------- |
-|  Numeric Functions   | abs, ceil, floor, max, min               |
-|   String Functions   | concat, replace, split, tolower, toupper |
-| Collection Functions | element, keys, length, merge, sort       |
-| Filesystem Functions | file, filebase64, dirname                |
+| Function Categories    | Functions Available                      |
+| :--------------------- | ---------------------------------------- |
+| `Numeric Functions`    | abs, ceil, floor, max, min               |
+| `String Functions`     | concat, replace, split, tolower, toupper |
+| `Collection Functions` | element, keys, length, merge, sort       |
+| `Filesystem Functions` | file, filebase64, dirname                |
 
 ## Local Values
 
 -   Local Values are similar to variables in the sense that they allow you to store data centrally and that can be referenced in multiple parts of the configuration.
--   **Additional Benefits of Locals** - You can add expressions to locals, which allows you to compute values dynamically
+-   **Additional Benefits of Locals** - You can add expressions to locals, which allows you to compute values dynamically.
 
 **Locals v/s Variables** -
 
@@ -128,17 +127,17 @@ condition ? true_val : false_val
 
 **Important Points** -
 
--   Local values are often just referred to as `locals`
--   Local values are created by a `locals` block (plural), but you reference them as attributes on an object `local` (singular)
+-   Local values are often just referred to as `locals`.
+-   Local values are created by a `locals` block (plural), but you reference them as attributes on an object `local` (singular).
 
 ## Data Sources
 
--   Data sources allow Terraform to ` use/fetch information outside information of Terraform`
--   `${path.module}` returns the current file system path where your code is located
+-   Data sources allow Terraform to ` use/fetch information outside information of Terraform`.
+-   `${path.module}` returns the current file system path where your code is located.
 -   A data source is accessed via a special kind of resource known as `data resource`, declared using a data block;
--   Following data block requests that Terraform read from a given data source("aws_instance") and export the result under the given local name("foo")
+-   Following data block requests that Terraform read from a given data source("aws_instance") and export the result under the given local name("foo").
 
-**Filter Structure** - Within the body(between { and } ) are query constraints defined by the data source
+**Filter Structure** - Within the body(between { and } ) are query constraints defined by the data source.
 
 ## Debugging in Terraform
 
@@ -149,22 +148,22 @@ condition ? true_val : false_val
 
 ## Load Order & Semantics
 
--   Terraform generally loads all the configuration files within the directory specified in the alphabetic order
--   The files loaded must end in either `.tf` or `.tf.json` to specify the format that's in use
+-   Terraform generally loads all the configuration files within the directory specified in the alphabetic order.
+-   The files loaded must end in either `.tf` or `.tf.json` to specify the format that's in use.
 
 ## Dynamic Blocks
 
--   Dynamic Blocks allows us to dynamically construct repeatable nested blocks which are supported inside resource, data, provider, and provisioner block
+-   Dynamic Blocks allows us to dynamically construct repeatable nested blocks which are supported inside resource, data, provider, and provisioner block.
 
 **Iterators** -
 
 -   The iterator argument(optional) sets the name of a temporary variable that represents the current element of the complex value.
--   If omitted, the name of the variable defaults to the label of the dynamic block("ingress" in the above example)
+-   If omitted, the name of the variable defaults to the label of the dynamic block("ingress" in the above example).
 
 ## Terraform Validate
 
 -   `terraform validate` primarily checks whether a configuration is syntactically valid.
--   It can check various aspects including unsupported arguments, undeclared variables and others
+-   It can check various aspects including unsupported arguments, undeclared variables and others.
 
 ## Terraform Taint
 
@@ -187,43 +186,43 @@ condition ? true_val : false_val
 
 ## Terraform Graph
 
--   Terraform graph refers to a `visual representation of the dependency relationships` between resources defined in your Terraform configuration
+-   Terraform graph refers to a `visual representation of the dependency relationships` between resources defined in your Terraform configuration.
 -   Terraform graphs are a valuable tool for visualization and understanding the relationships between resources in your infrastructure with Terraform.
--   It can improve your overall workflow by aiding in planning, debugging, and managing complex infrastructure configurations
+-   It can improve your overall workflow by aiding in planning, debugging, and managing complex infrastructure configurations.
 
 ## Apply from Plan File
 
--   Terraform allows you to save a plan to a file
+-   Terraform allows you to save a plan to a file.
 -   Command - `terraform plan -out ec2.plan`
 
 -   You can run the `terraform apply` by referencing a plan file.
--   This ensures the infrastructure state remains exactly as shown in the plan to ensure consistency
+-   This ensures the infrastructure state remains exactly as shown in the plan to ensure consistency.
 -   Command - `terraform apply ec2.plan`
 
 **Exploring terraform plan file**
 
--   You can use the `terraform show` command to read the contents in detail
--   You can't read the file through file explorer, since it's a binary file
+-   You can use the `terraform show` command to read the contents in detail.
+-   You can't read the file through file explorer, since it's a binary file.
 
 **Use-Case of SAving Plan to a File**
 
--   Many organizations require documented proof of planned changes before implementation
+-   Many organizations require documented proof of planned changes before implementation.
 
 ## Terraform Output
 
--   The terraform output command is used to extract the value of an output variable from the state file
+-   The terraform output command is used to extract the value of an output variable from the state file.
 
 ## Terraform Settings
 
 -   We can use the provider block to define various aspects of the provider, like region, credentials and so on.
--   **Specific Version to run your code** - In a Terraform project, your code might require a specific set of versions to run
--   Terraform settings are used to configure project-specific Terraform behaviours, such as requiring a minimum Terraform version to apply your configuration.
--   Terraform settings are gathered together into `terraform blocks`
+-   **Specific Version to run your code** - In a Terraform project, your code might require a specific set of versions to run.
+-   Terraform settings are used to configure project-specific Terraform behaviors, such as requiring a minimum Terraform version to apply your configuration.
+-   Terraform settings are gathered together into `terraform blocks`.
 
 ### Use Case
 
 1. Specifying a required terraform version -
-    - If your code is compatible with specific versions of Terraform, you can use the `required_version` block to add your constraints
+    - If your code is compatible with specific versions of Terraform, you can use the `required_version` block to add your constraints.
 2. Specifying Provider Requirements -
     - The `required_providers` block can be used to specify all of the providers required by your terraform code.
 3. Flexibility in Settings block -
@@ -234,12 +233,12 @@ condition ? true_val : false_val
 -   When you have a larger infrastructure, you will face issues related to API limits for providers.
 -   Switch to a smaller configuration where each can be applied independently.
 -   1st way -
-    -   We can prevent Terraform from querying the current state during operations like `terraform plan`. This can be achieved with the `terraform plan -refresh=false` flag
+    -   We can prevent Terraform from querying the current state during operations like `terraform plan`. This can be achieved with the `terraform plan -refresh=false` flag.
 -   2nd Way -
     -   Specify the target
-    -   The `terraform plan -refresh=false -target=aws_security_group.allow_ssh_conn` flag can be used to target a specific resource
-    -   Generally used as a means to operate on isolated portions of very large configurations
-    -   The `~` sign means that there is an update going on in that place
+    -   The `terraform plan -refresh=false -target=aws_security_group.allow_ssh_conn` flag can be used to target a specific resource.
+    -   Generally used as a means to operate on isolated portions of very large configurations.
+    -   The `~` sign means that there is an update going on in that place.
 
 ## Zipmap Function
 
@@ -253,8 +252,121 @@ condition ? true_val : false_val
 
 -   The terraform language supports 3 different syntaxes for comments:
 
-|   Type    | Description                                                                       |
-| :-------: | --------------------------------------------------------------------------------- |
-|     #     | begins a single-line comment, ending at the end of the line (recommended over //) |
-|    //     | also begin as a single-line comment, as an alternative to #                       |
-| /_ and _/ | are start and end delimiters for a comment that might span over multiple lines    |
+|    Type     | Description                                                                       |
+| :---------: | --------------------------------------------------------------------------------- |
+|     `#`     | begins a single-line comment, ending at the end of the line (recommended over //) |
+|    `//`     | also begin as a single-line comment, as an alternative to #                       |
+| `/_ and _/` | are start and end delimiters for a comment that might span over multiple lines    |
+
+## Resource Behavior and Meta Arguments
+
+-   A `resource block` declares that you want a particular infrastructure object to exist with the given settings.
+
+### How terraform applies a configuration
+
+-   Create resources that exist in the configuration but are not associated with a real infrastructure object in the state.
+-   Destroy resources that exist in a state but no longer exist in the configuration.
+-   Update in-place resources whose arguments have changed.
+-   Destroy and re-create resources whose arguments have changed but which cannot be updated in-place due to remote API limitations.
+
+**Understanding the Limitations** - Some modification happened in Real Infrastructure object that is not part of Terraform but you want to ignore those changes during terraform apply. This is where the `meta-argument` comes into picture.
+
+### Solution - Using Meta Arguments
+
+-   Terraform allows us to include `meta-argument` within the resource block which allows some details of this standard resource behavior to be customized on a per-resource basis.
+
+### Different Meta Arguments
+
+| Meta-Argument | Description                                                                                                                                               |
+| :------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `depends_on`  | Handle hidden resources or module dependencies that Terraform automatically cannot infer                                                                  |
+| `count`       | Accepts a whole number, and creates that many instance of the resource                                                                                    |
+| `for_each`    | Accepts a map or a set of strings, and creates an instance for each item in that map or set                                                               |
+| `lifecycle`   | Allows modification to resource lifecycle                                                                                                                 |
+| `provider`    | Specifies which provider configuration to be use for a resource, overriding Terraform's default behavior of selecting one based on the resource type name |
+
+## Meta-Argument - Lifecycle
+
+### Arguments Available
+
+| Arguments               | Description                                                                                                          |
+| :---------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `create_before_destroy` | New replacement is created first, and the prior object is destroyed after the replacement is created                 |
+| `prevent_destroy`       | Terraform to reject with an error any plan that would destroy the infrastructure object associated with the resource |
+| `ignore_changes`        | Ignore certain changes to the live resource that does not match the configuration                                    |
+| `replace_triggered_by`  | Replaces the resources when any of the referenced item change                                                        |
+
+### Lifecycle Meta-Argument - Create Before Destroy
+
+-   By default, when Terraform must change a resource argument that cannot be updated in-place due to remote API limitations, Terraform will instead destroy the existing object and then create a new replacement object with the new configured arguments.
+
+### Lifecycle Meta-Argument - Prevent Destroy
+
+-   This meta-argument, when set to true, will cause Terraform to reject with an error any plan that would destroy the infrastructure object associated with the resource, as long as argument remains present in the configuration.
+
+**Points to Note**
+
+-   This can be used as a measure of safety against the accidental replacement of objects that may be costly to reproduce, such as database instances.
+-   Since this argument must be present in configuration for the protection to apply, note that this setting does not prevent the remote object from being destroyed if the resource block were removed from configuration entirely.
+
+### Lifecycle Meta-Argument - Ignore Changes
+
+-   In cases where settings of a remote object is modified by processes outside of Terraform, the Terraform would attempt to "fix" on the run.
+-   In order to change this behavior and ignore the manually applied change, we can make use of `ignore_changes` argument under lifecycle.
+
+**Points to Note**
+
+-   Instead of a list, the special keyword `all` may be used to instruct Terraform to ignore all attributes, which means Terraform can create or destroy remote object but will never propose updates to it.
+
+### Meta-Argument - Count
+
+-   If your resources are almost identical, count is appropriate.
+-   If distinctive values are needed in the arguments, usage of `for_each` is needed.
+
+## Data Type
+
+### List
+
+-   Lists are used to store multiple items in a single variable.
+-   List items are ordered, changeable, and allow duplicate values.
+-   List items are indexed, the first item has index `[0]`, the second item has index `[1]`, etc.
+
+```terraform
+variable "iam_names" {
+  type    = list(string)
+  default = ["user-01", "user-02", "user-03"]
+}
+```
+
+### Set
+
+-   SET is used to store multiple items in a single variable.
+-   SET items are unordered and no duplicates are allowed.
+-   Command - `demoSet = {"apple", "banana", "mango"}`
+
+**toset Function** - `toset` function will convert a list of values to set.
+
+## for_each
+
+-   `for_each` makes use of map/set as an index value of the created resource.
+
+```terraform
+resource "aws_iam_user" "iam" {
+  for_each = toset(["user-01", "user=02", "user-03"])
+  name     = each.key
+}
+```
+
+### Replication Count Challenge
+
+-   If a new element is added, it will not affect the other resources.
+
+### The each object
+
+-   In blocks where `for_each` is set, an additional each object is available.
+-   The object has 2 main attributes:
+
+| Each Object  | Description                                               |
+| :----------- | --------------------------------------------------------- |
+| `each.key`   | The map key (or set member) corresponding to the instance |
+| `each.value` | The map value of the corresponding to this instance       |
