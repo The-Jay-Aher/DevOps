@@ -178,7 +178,7 @@ _Important Points_ -
 
 -   The `-replace` option with `terraform apply` to force Terraform to replace an object even though there are no configuration changes that would require it.
 
-\__Points to Note_+
+_Points to Note_
 
 -   A similar kind of functionality was achieved using the `terraform taint` command in the older versions of Terraform.
 -   For Terraform v15.2.0 and later, HashiCorp recommended using the `-replace` option with `terraform apply`.
@@ -430,3 +430,41 @@ Example: After EC2 is launched, install "apache" software
 **Remote Exec Provisioner Approach** -
 
 -   Since commands executed are executed on remote-server, we have to provide way for terraform to connect to remote server.
+
+**Points to Note** -
+
+_Provisioners are Defined inside the Resource Block_
+
+-   It is not necessary to define a `aws_instance` resource block for provisioner to run.
+-   They can also be defined inside other resources types as well.
+
+_Multiple Provisioner Blocks for Single Resources_
+
+-   We can define multiple provisioners block in a single resource block.
+
+### Creation-Time and Destroy-Time Provisioners
+
+**Creation-Time Provisioners**
+
+-   By default, provisioners run when the resources are defined within is created.
+-   Creation-Time provisioners are `only run during creation`, not during updating or any other lifecycle.
+
+**Destroy-Time Provisioners**
+
+-   Destroy provisioner run before the provisioner is destroyed.
+-   Example: Remove and De-link anti-virus software before EC2 get terminated.
+
+**Tainting Resource in Creation-Time Provisioners**
+
+-   If a creation-time provisioner fails, the resource is marked as tainted.
+-   A tainted resource will be planned for destruction and recreation upon the next terraform apply.
+-   Terraform does this because a failed provisioner can leave a resource in a semi-configured state.
+
+### Failure Behavior for Provisioners
+
+The `on_failure` setting can be used to change the default behavior.
+
+| **Allowed Values** | **Description**                                                                                                 |
+| :----------------- | --------------------------------------------------------------------------------------------------------------- |
+| `continue`         | Ignore the error and continue with the creation or destruction.                                                 |
+| `fail`             | Raise an error and stop applying (the default behavior). If this is a creation provisioner, taint the resource. |
