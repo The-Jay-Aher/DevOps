@@ -468,3 +468,106 @@ The `on_failure` setting can be used to change the default behavior.
 | :----------------- | --------------------------------------------------------------------------------------------------------------- |
 | `continue`         | Ignore the error and continue with the creation or destruction.                                                 |
 | `fail`             | Raise an error and stop applying (the default behavior). If this is a creation provisioner, taint the resource. |
+
+## Terraform Modules
+
+### Basics of Terraform Modules
+
+**Understanding the Basic** -
+
+In software engineering, `don't repeat yourself` (DRY) is a principle of software development aimed at reducing repetition of software patterns.
+
+**Challenges** -
+
+1. Repetition of code.
+2. Change in AWS Provider specific option will require change in EC2 code blocks all the teams.
+3. Lack of standardization.
+4. Difficulty to manage.
+5. Difficult for developers to use.
+
+**Better Approach** -
+
+In this approach, the DevOps team has defined standard Ec2 template in a central location that all can use.
+
+**Introducing Terraform Modules** -
+
+Terraform Modules allows us to centralize the resource configuration and it makes it easier for multiple projects to re-use the Terraform code for projects.
+
+Example -
+
+```terraform
+module "e2_instance" {
+    source = "terraform-aws-modules/ec2-instance/aws"
+}
+```
+
+**Multiple Modules for a Single Project** -
+
+Instead of writing code from scratch, we can use multiple ready-made modules available.
+
+### Points to Note -
+
+**Understanding the Base** -
+
+For some infrastructure resources, you can directly use the module calling code, and the entire infrastructure will be created for you.
+
+**Avoiding Confusion** -
+
+Just by referencing any module, it is not always the case that the infrastructure will be created for you directly.
+Some of the modules require specific inputs and values from the user side to be filled in before a resource gets created.
+
+**Example Module - AWS EKS** -
+
+If you try to use an AWS EKS Module directly and run `terraform apply`, it will throw an `error`.
+
+**Module Structure can be Different** -
+
+Some modules in GitHub can contain multiple sets of modules together for different features. In such cases, you have to reference the exact sub-module required.
+
+### Choosing the right Terraform module
+
+**Understanding the Base** -
+
+Terraform registry can contain multiple modules for a specific infrastructure resource maintained by different users.
+
+**1 - Check total downloads** -
+
+Module downloads can provide early indication of level of acceptance by users in the Terraform community.
+
+**2 - Check the GitHub page of the Module** -
+
+GitHUb pages can provide important information related to the contributors, reported issues, and other data.
+
+**3 - Avoid Modules written by individual participant** -
+
+Avoid module that are maintained by a single contributor as regular updates, issues and other areas might not always be maintained.
+
+**4 - Analyze Module Documentation** -
+
+Good documentation must include an overview, usage instructions, input and output variables, and examples.
+
+**5 - Check version history of Module** -
+
+Look at the version history. Frequent versions and a clear versioning strategy suggest active maintenance.
+
+**6 - Analyze the Code** -
+
+Inspect the module's source code on GitHub or another platform. Clean, well-structured code us a good sign.
+
+**7 - Check the community feedback** -
+
+The number of starts and forks on GitHub can indicate the popularity and community interest.
+
+**8 - Modules maintained by the Hashicorp Partner** -
+
+Search for modules maintained by Hashicorp partners.
+
+**Important Point to Note** -
+
+-   Avoid directly trying any random Terraform Module that is not actively maintained and looks shady(primarily by sole individual contributors)
+-   An attacker can include malicious code in a module that sends information about environment to the attacker.
+
+**Which modules do organizations use?**
+
+-   In most scenarios, organizations maintain their own set of modules
+-   They might initially fork a module from the Terraform Registry and modify it based on their use case.
