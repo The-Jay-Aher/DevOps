@@ -388,9 +388,9 @@ Organizations would want end-to-end solution for creation of infrastructure and 
 
 **Introducing Provisioners**
 
-Provisioners allow you to `execute scripts on a local or remote machine` as a part of resource creation or destruction.
+-   Provisioners allow you to `execute scripts on a local or remote machine` as a part of resource creation or destruction.
 
-Example: After VM is launched, install software package required for application.
+-   Example: After VM is launched, install software package required for application.
 
 ### Type of Provisioners
 
@@ -406,28 +406,26 @@ There are 2-major types of provisioners:
 
 **Type 1 - local-exec provisioner**
 
-The local-exec provisioner invokes a local executable after a resource is created.
-
-Example: After EC2 instance is launched, fetch the `ip` and store it in file `server_ip.txt`
+-   The local-exec provisioner invokes a local executable after a resource is created.
+-   Example: After EC2 instance is launched, fetch the `ip` and store it in file `server_ip.txt`
 
 **Type 2 - remote-exec provisioner**
 
-remote-exec provisioners allow to invoke scripts or run commands directly on the remote server.
-
-Example: After EC2 is launched, install "apache" software
+-   `remote-exec` provisioners allow to invoke scripts or run commands directly on the remote server.
+-   Example: After EC2 is launched, install "apache" software
 
 ### Format of Provisioners
 
-**Defining Provisioners** -
+**Defining Provisioners**
 
 -   Provisioners are defined inside a specific resource.
 -   Provisioners are defined by `provisioner` followed by the type od provisioner.
 
-**Local Exec Provisioner Approach** -
+**Local Exec Provisioner Approach**
 
 -   For local provisioner, we have to specify the command that needs to be run locally.
 
-**Remote Exec Provisioner Approach** -
+**Remote Exec Provisioner Approach**
 
 -   Since commands executed are executed on remote-server, we have to provide way for terraform to connect to remote server.
 
@@ -487,11 +485,11 @@ In software engineering, `don't repeat yourself` (DRY) is a principle of softwar
 
 **Better Approach** -
 
-In this approach, the DevOps team has defined standard Ec2 template in a central location that all can use.
+-   In this approach, the DevOps team has defined standard Ec2 template in a central location that all can use.
 
 **Introducing Terraform Modules** -
 
-Terraform Modules allows us to centralize the resource configuration and it makes it easier for multiple projects to re-use the Terraform code for projects.
+-   Terraform Modules allows us to centralize the resource configuration and it makes it easier for multiple projects to re-use the Terraform code for projects.
 
 Example -
 
@@ -501,28 +499,28 @@ module "e2_instance" {
 }
 ```
 
-**Multiple Modules for a Single Project** -
+**Multiple Modules for a Single Project**
 
-Instead of writing code from scratch, we can use multiple ready-made modules available.
+-   Instead of writing code from scratch, we can use multiple ready-made modules available.
 
 ### Points to Note -
 
-**Understanding the Base** -
+**Understanding the Base**
 
 For some infrastructure resources, you can directly use the module calling code, and the entire infrastructure will be created for you.
 
-**Avoiding Confusion** -
+**Avoiding Confusion**
 
-Just by referencing any module, it is not always the case that the infrastructure will be created for you directly.
-Some of the modules require specific inputs and values from the user side to be filled in before a resource gets created.
+-   Just by referencing any module, it is not always the case that the infrastructure will be created for you directly.
+-   Some of the modules require specific inputs and values from the user side to be filled in before a resource gets created.
 
-**Example Module - AWS EKS** -
+**Example Module - AWS EKS**
 
-If you try to use an AWS EKS Module directly and run `terraform apply`, it will throw an `error`.
+-   If you try to use an AWS EKS Module directly and run `terraform apply`, it will throw an `error`.
 
-**Module Structure can be Different** -
+**Module Structure can be Different**
 
-Some modules in GitHub can contain multiple sets of modules together for different features. In such cases, you have to reference the exact sub-module required.
+-   Some modules in GitHub can contain multiple sets of modules together for different features. In such cases, you have to reference the exact sub-module required.
 
 ### Choosing the right Terraform module
 
@@ -530,39 +528,39 @@ Some modules in GitHub can contain multiple sets of modules together for differe
 
 Terraform registry can contain multiple modules for a specific infrastructure resource maintained by different users.
 
-**1 - Check total downloads** -
+**1 - Check total downloads**
 
-Module downloads can provide early indication of level of acceptance by users in the Terraform community.
+-   Module downloads can provide early indication of level of acceptance by users in the Terraform community.
 
-**2 - Check the GitHub page of the Module** -
+**2 - Check the GitHub page of the Module**
 
-GitHUb pages can provide important information related to the contributors, reported issues, and other data.
+-   GitHUb pages can provide important information related to the contributors, reported issues, and other data.
 
-**3 - Avoid Modules written by individual participant** -
+**3 - Avoid Modules written by individual participant**
 
-Avoid module that are maintained by a single contributor as regular updates, issues and other areas might not always be maintained.
+-   Avoid module that are maintained by a single contributor as regular updates, issues and other areas might not always be maintained.
 
-**4 - Analyze Module Documentation** -
+**4 - Analyze Module Documentation**
 
-Good documentation must include an overview, usage instructions, input and output variables, and examples.
+-   Good documentation must include an overview, usage instructions, input and output variables, and examples.
 
-**5 - Check version history of Module** -
+**5 - Check version history of Module**
 
-Look at the version history. Frequent versions and a clear versioning strategy suggest active maintenance.
+-   Look at the version history. Frequent versions and a clear versioning strategy suggest active maintenance.
 
-**6 - Analyze the Code** -
+**6 - Analyze the Code**
 
-Inspect the module's source code on GitHub or another platform. Clean, well-structured code us a good sign.
+-   Inspect the module's source code on GitHub or another platform. Clean, well-structured code us a good sign.
 
-**7 - Check the community feedback** -
+**7 - Check the community feedback**
 
-The number of starts and forks on GitHub can indicate the popularity and community interest.
+-   The number of starts and forks on GitHub can indicate the popularity and community interest.
 
-**8 - Modules maintained by the Hashicorp Partner** -
+**8 - Modules maintained by the Hashicorp Partner**
 
-Search for modules maintained by Hashicorp partners.
+-   Search for modules maintained by Hashicorp partners.
 
-**Important Point to Note** -
+**Important Point to Note**
 
 -   Avoid directly trying any random Terraform Module that is not actively maintained and looks shady(primarily by sole individual contributors)
 -   An attacker can include malicious code in a module that sends information about environment to the attacker.
@@ -571,3 +569,96 @@ Search for modules maintained by Hashicorp partners.
 
 -   In most scenarios, organizations maintain their own set of modules
 -   They might initially fork a module from the Terraform Registry and modify it based on their use case.
+
+### Creating Base Module Structure for custom module
+
+**Understanding the Base**
+
+-   A base `modules` folder.
+-   A sub-folder containing name for each modules that are available.
+
+**What is Inside each Sub-Folders**
+
+-   Each module's sub-folder contains the actual module Terraform code that other projects can reference from.
+
+**Calling the Module**
+
+-   Each team can call various set of modules that are available in the modules folder based on their requirements.
+
+**Our Practical Structure**
+
+-   Our practical structure will include two main folders(modules and teams).
+-   Modules sub-folder will contain sub-folder of modules that are available.
+-   Teams sub-folder will contain list of teams that we want to be made available.
+
+### Module Sources - Calling a Module
+
+**Understanding the Base**
+
+Module source code can be present in wide variety of locations.
+
+These include:
+
+1. GitHub
+2. HTTP URLs
+3. S3 Buckets
+4. Terraform Registry
+5. Local Paths
+
+**Base- Calling the Module**
+
+-   In order to reference the module, you need to make use of `module` block.
+-   The module block must contain tha source argument that contains location to the referenced module.
+
+**Example 1 - Local Paths**
+
+-   Local paths are used to reference to module that is available in the filesystem.
+-   A local path must begin with `./` or `../` to indicate that a local path.
+
+**Example 2 - Generic Git Repository**
+
+-   Arbitrary Git repositories can be used by prefixing with the special `git::` prefix.
+
+    ```terraform
+        module "vpc" {
+            source = "git::https://example.com/vpc.git"
+        }
+    ```
+
+**Module Version**
+
+-   A specific module can have multiple versions
+-   You can reference to specific version of module with the `version` block.
+
+### Improvements in Custom Module Code
+
+**Our Simple Module**
+
+-   We had created a very simple module that allows developers to launch an EC2 instance when calling the module.
+
+**Challenge 1 - Hardcoded Values**
+
+-   The values are hardcoded as part of the module.
+-   If developer is calling the module, he will have to stick with same values.
+-   Developer will not be able to override the hardcoded values of the module.
+
+**Challenge 2 - Provider Improvements**
+
+-   Avoid hard-coding region in the Module code as much as possible.
+-   A `required_provider` block with version control for module to work is important.
+
+### Variables in Terraform Modules
+
+**Convert Hard-Coded values to Variables**
+
+-   For modules, it is especially recommended to convert hard-coded values to `variables` so that it can be overridden based on user requirement.
+
+**Advantages of variables in module code**
+
+-   Variable based approach allows teams to override the values.
+
+**Reviewing Professional EC2 Module Code**
+
+-   Reviewing an EC2 module code that is professionally written, we see that the values associate with arguments are not hardcoded and variables were used extensively.
+
+### Converting the Hardcoded values to variables in custom module
