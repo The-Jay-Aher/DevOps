@@ -1,5 +1,14 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.50"
+    }
+  }
+}
+
 provider "aws" {
-  region = var.region
+  region = "ap-south-1"
 }
 
 resource "aws_instance" "Terraform-Server" {
@@ -9,4 +18,8 @@ resource "aws_instance" "Terraform-Server" {
   tags = {
     Name = "First-Terraform-Server"
   }
+}
+
+output "instance_id" {
+  value = aws_instance.Terraform-Server.id
 }

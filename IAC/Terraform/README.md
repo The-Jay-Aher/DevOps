@@ -661,4 +661,46 @@ These include:
 
 -   Reviewing an EC2 module code that is professionally written, we see that the values associate with arguments are not hardcoded and variables were used extensively.
 
-### Converting the Hardcoded values to variables in custom module
+### Module Outputs
+
+**Revising Output Values**
+
+-   `Output Values` make information about your infrastructure available on the command line, and can expose information for other Terraform configuration to use.
+
+**Understanding the challenge**
+
+-   If you want to create a resource that has an dependency on an infrastructure created through a module, you won't be able to implicitly call it without output values. In simpler terms, we can't get the ID of the instance while it's created, hence we create an output which helps us access the ID of the instance.
+
+**Accessing Child Module Outputs**
+
+-   Ensure that include output values in the output code for better flexibility and integration with other resources and projects.
+
+**Revising Output Values**
+
+-   `Output Values` make information about your infrastructure available on the command line, and can expose information for other Terraform configurations to use.
+
+**Accessing Child Module Outputs**
+
+-   Ensure to include output values in the middle code for better flexibility and integration with other resources and projects.
+-   Format : `module.<MODULE NAME>.<OUTPUT NAME>`
+
+### Root Module v/s Child Module
+
+**Root Module**
+
+-   Root Module resides in the `main working directory of Terraform configuration`. This is the entry point for your infrastructure definition.
+
+**Child Module**
+
+-   A `module that has been called by another module` is often referred to as a child module.
+
+### Standard Module Structure
+
+**Setting the Base**
+
+-   At this stage, we have been keeping the overall module structure very simple to understand the concepts.
+-   In production environments, it is important to follow recommendation and best-practices set by HashiCorp.
+
+**Basic of Standard Module Structure**
+
+-   The `standard module structure` is a file and directory layout by HashiCorp recommends for re-usable models.
