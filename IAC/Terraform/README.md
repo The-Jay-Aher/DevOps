@@ -758,3 +758,54 @@ These include:
 **Introducing Terraform Workspaces** -
 
 -   Terraform workspaces enable us to `manage multiple set of deployments from the same sets of configuration file`.
+
+## Remote State Management
+
+### Terraform and .gitignore
+
+**Overview of gitignore** -
+
+-   The `.gitignore` file is a text file that tells Git which files or folders to ignore in a project.
+-   Depending on the environment, it is recommended to avoid committing certain files to GIT.
+
+| **Files to Ignore** | **Description**                                                       |
+| :------------------ | --------------------------------------------------------------------- |
+| .terraform          | This file will be recreated when terraform init is run.               |
+| terraform.tfvars    | Likely to contain secretive data like username/passwords and secrets. |
+| terraform.tfstate   | Should be stored in the remote site.                                  |
+| crash.log           | If terraform crashes, the logs are stored to file named `crash.log`   |
+
+### Terraform Backend
+
+**Basics of Backend** -
+
+-   Backends primarily determine where Terraform stores it's state.
+-   By default, Terraform implicitly uses a backend called local to store state as a local file on disk.
+
+**Challenge with Local Backend** -
+
+-   Nowadays project is handled and collaborated by an entire team.
+-   Storing the state file in the local laptop will not allow collaboration.
+
+**Ideal Architecture** -
+
+Following describes one of the recommended architecture -
+
+1. The Terraform code is stored in GIT Repository.
+2. The state file is stored in central backend.
+
+**Backends Supported in Terraform** -
+
+-   Terraform supports multiple backends that allows remote service related operations.
+-   Some of the popular backends include:
+    -   S3
+    -   Consul
+    -   Azurerm
+    -   Kubernetes
+    -   HTTP
+    -   ETCD
+
+**Important Note** -
+
+-   Accessing state in a remote service generally requires some kind of access credentials
+-   Some backends act like plain "remote disks" for state files; other support locking the state while operations are being performed, which helps prevent conflict and inconsistencies.
