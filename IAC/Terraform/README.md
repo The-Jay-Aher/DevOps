@@ -704,3 +704,57 @@ These include:
 **Basic of Standard Module Structure**
 
 -   The `standard module structure` is a file and directory layout by HashiCorp recommends for re-usable models.
+
+**Planning the Module Structure** -
+
+-   In this scenario, a team of Terraform Producers, who write Terraform code from scratch, will build a collection of modules to provision the infrastructure and applications.
+-   The members of the team in charge of the application will consume these modules to provision the infrastructure they need.
+
+**Final Module Output** -
+
+-   After reviewing the consumer team's requirement, the producer team has `broken up the application infrastructure in the following modules`:
+    -   Network
+    -   Web
+    -   App
+    -   Database
+    -   Routing
+    -   Security
+
+### Publishing Modules in Terraform Registry
+
+**Overview of Publishing Modules** -
+
+-   Anyone can publish and share modules on the Terraform Registry.
+-   Published modules support versioning, automatic generate documentation, allow browsing version histories, show examples, and READMEs and more.
+
+**Requirement for Publishing Module** -
+
+| **Requirement**           | **Description**                                                                                                                                                              |
+| :------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GitHub                    | The module must be on GitHub and must be a public repo. This is only a requirement for the public registry.                                                                  |
+| Named                     | Module repository must use this three-part name format `terraform-<PROVIDER>-<NAME>`.                                                                                        |
+| Repository Description    | The GitHub repository description is used to populate the short description of the module.                                                                                   |
+| Standard Module Structure | The module must adhere to standard module structure.                                                                                                                         |
+| x.y.x tags for releases   | The registry uses tags to identify module versions. Release tag names must be a semantic version, which can often be prefixed with a `v.`. For example, `v1.0.4` and `0.9.2` |
+
+**Standard Module Structure** -
+
+-   The standard module structure is a file and directory layout that is recommended for reuseable modules distributed in separate repositories.
+-   There are 2 Primary formats -
+    -   Minimal
+    -   Complete
+
+### Terraform Workspace
+
+**Setting the Base** -
+
+-   An infrastructure created through Terraform is `tied to the` underlying Terraform configuration in state file.
+
+**What If?** -
+
+-   What if we have multiple state files for single Terraform configuration?
+-   Can we manage different env's through it separately?
+
+**Introducing Terraform Workspaces** -
+
+-   Terraform workspaces enable us to `manage multiple set of deployments from the same sets of configuration file`.
