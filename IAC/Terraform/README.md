@@ -75,7 +75,7 @@ Terraform loads variables in the following order, with the later sources taking 
 
 ### Introducing Count Index
 
--   When using count, you can also make use of `count.index` which allows better flexibility. This attribute holds a distinct index number, starting from 0, that uniquely identifies each index created by count meta-argument.
+-   You can also use `count.index` which allows better flexibility. This attribute holds a distinct index number, starting from 0, and uniquely identifies each index created by count meta-argument.
 
 -   `0` -> First EC2 Instance
 -   `1` -> Second EC2 Instance
@@ -156,7 +156,7 @@ _Important Points_ -
 
 ### Dynamic Blocks
 
--   Dynamic Blocks allows us to dynamically construct repeatable nested blocks which are supported inside resource, data, provider, and provisioner block.
+-   Dynamic Blocks allow us to dynamically construct repeatable nested blocks which are supported inside resource, data, provider, and provisioner block.
 
 **Iterators** -
 
@@ -193,7 +193,7 @@ _Points to Note_
 -   Terraform graphs are a valuable tool for visualization and understanding the relationships between resources in your infrastructure with Terraform.
 -   It can improve your overall workflow by aiding in planning, debugging, and managing complex infrastructure configurations.
 
-### Apply from Plan File
+### Apply from the Plan File
 
 -   Terraform allows you to save a plan to a file.
 -   Command - `terraform plan -out ec2.plan`
@@ -205,7 +205,7 @@ _Points to Note_
 _Exploring terraform plan file_
 
 -   You can use the `terraform show` command to read the contents in detail.
--   You can't read the file through file explorer, since it's a binary file.
+-   You can't read the file through File Explorer, since it's a binary file.
 
 _Use-Case of Saving Plan to a File_
 
@@ -219,7 +219,7 @@ _Use-Case of Saving Plan to a File_
 
 -   We can use the provider block to define various aspects of the provider, like region, credentials and so on.
 -   _Specific Version to run your code_ - In a Terraform project, your code might require a specific set of versions to run.
--   Terraform settings are used to configure project-specific Terraform behaviors, such as requiring a minimum Terraform version to apply your configuration.
+-   Terraform settings are used to configure project-specific Terraform behaviours, such as requiring a minimum Terraform version to apply your configuration.
 -   Terraform settings are gathered together into `terraform blocks`.
 
 **Use Case**
@@ -249,7 +249,7 @@ _Use-Case of Saving Plan to a File_
 -   Command - `zipmap(keyslist, valueslist)`
 -   **Simple Use Case** -
     -   You are creating multiple IAM users.
-    -   You need to output which contains direct mapping of the IAM names and ARNs.
+    -   You need to output which contains a direct mapping of the IAM names and ARNs.
 
 ### Comment in Terraform
 
@@ -258,35 +258,35 @@ _Use-Case of Saving Plan to a File_
     |  **Type**   | **Description**                                                                   |
     | :---------: | --------------------------------------------------------------------------------- |
     |     `#`     | begins a single-line comment, ending at the end of the line (recommended over //) |
-    |    `//`     | also begin as a single-line comment, as an alternative to #                       |
+    |    `//`     | also begins as a single-line comment, as an alternative to #                       |
     | `/_ and _/` | are start and end delimiters for a comment that might span over multiple lines    |
 
 ### Resource Behavior and Meta Arguments
 
 -   A `resource block` declares that you want a particular infrastructure object to exist with the given settings.
 
-**How terraform applies a configuration**
+**How Terraform applies a configuration**
 
 -   Create resources that exist in the configuration but are not associated with a real infrastructure object in the state.
 -   Destroy resources that exist in a state but no longer exist in the configuration.
 -   Update in-place resources whose arguments have changed.
--   Destroy and re-create resources whose arguments have changed but which cannot be updated in-place due to remote API limitations.
+-   Destroy and re-create resources whose arguments have changed but which cannot be updated in place due to remote API limitations.
 
-**Understanding the Limitations** - Some modification happened in Real Infrastructure object that is not part of Terraform but you want to ignore those changes during terraform apply. This is where the `meta-argument` comes into picture.
+**Understanding the Limitations** - Some modifications happened in the Real Infrastructure object that is not part of Terraform but you want to ignore those changes during `terraform apply`. This is where the `meta-argument` comes into the picture.
 
 **Solution - Using Meta Arguments**
 
--   Terraform allows us to include `meta-argument` within the resource block which allows some details of this standard resource behavior to be customized on a per-resource basis.
+-   Terraform allows us to include `meta-argument` within the resource block which allows some details of this standard resource behaviour to be customized on a per-resource basis.
 
 **Different Meta Arguments**
 
 | **Meta-Argument** | **Description**                                                                                                                                           |
 | :---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `depends_on`      | Handle hidden resources or module dependencies that Terraform automatically cannot infer                                                                  |
-| `count`           | Accepts a whole number, and creates that many instance of the resource                                                                                    |
+| `count`           | Accepts a whole number, and creates that many instances of the resource                                                                                    |
 | `for_each`        | Accepts a map or a set of strings, and creates an instance for each item in that map or set                                                               |
 | `lifecycle`       | Allows modification to resource lifecycle                                                                                                                 |
-| `provider`        | Specifies which provider configuration to be use for a resource, overriding Terraform's default behavior of selecting one based on the resource type name |
+| `provider`        | Specifies which provider configuration to use for a resource, overriding Terraform's default behaviour of selecting one based on the resource type name |
 
 ### Meta-Argument - Lifecycle
 
@@ -294,36 +294,36 @@ _Use-Case of Saving Plan to a File_
 
 | **Arguments**           | **Description**                                                                                                      |
 | :---------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `create_before_destroy` | New replacement is created first, and the prior object is destroyed after the replacement is created                 |
+| `create_before_destroy` | A new replacement is created first, and the prior object is destroyed after the replacement is created                 |
 | `prevent_destroy`       | Terraform to reject with an error any plan that would destroy the infrastructure object associated with the resource |
 | `ignore_changes`        | Ignore certain changes to the live resource that does not match the configuration                                    |
-| `replace_triggered_by`  | Replaces the resources when any of the referenced item change                                                        |
+| `replace_triggered_by`  | Replaces the resources when any of the referenced items change                                                        |
 
 **Lifecycle Meta-Argument - Create Before Destroy**
 
--   By default, when Terraform must change a resource argument that cannot be updated in-place due to remote API limitations, Terraform will instead destroy the existing object and then create a new replacement object with the new configured arguments.
+-   By default, when Terraform must change a resource argument that cannot be updated in place due to remote API limitations, Terraform will instead destroy the existing object and then create a new replacement object with the new configured arguments.
 
 **Lifecycle Meta-Argument - Prevent Destroy**
 
--   This meta-argument, when set to true, will cause Terraform to reject with an error any plan that would destroy the infrastructure object associated with the resource, as long as argument remains present in the configuration.
+-   This meta-argument, when set to true, will cause Terraform to reject with an error any plan that would destroy the infrastructure object associated with the resource, as long as the argument remains present in the configuration.
 
 _Points to Note_
 
 -   This can be used as a measure of safety against the accidental replacement of objects that may be costly to reproduce, such as database instances.
--   Since this argument must be present in configuration for the protection to apply, note that this setting does not prevent the remote object from being destroyed if the resource block were removed from configuration entirely.
+-   Since this argument must be present in the configuration for the protection to apply, note that this setting does not prevent the remote object from being destroyed if the resource block were removed from the configuration entirely.
 
 **Lifecycle Meta-Argument - Ignore Changes**
 
 -   In cases where settings of a remote object is modified by processes outside of Terraform, the Terraform would attempt to "fix" on the run.
--   In order to change this behavior and ignore the manually applied change, we can make use of `ignore_changes` argument under lifecycle.
+-   To change this behaviour and ignore the manually applied change, we can make use of the `ignore_changes` argument under lifecycle.
 
 _Points to Note_
 
--   Instead of a list, the special keyword `all` may be used to instruct Terraform to ignore all attributes, which means Terraform can create or destroy remote object but will never propose updates to it.
+-   Instead of a list, the special keyword `all` may be used to instruct Terraform to ignore all attributes, which means Terraform can create or destroy remote objects but will never propose updates to them.
 
 **Meta-Argument - Count**
 
--   If your resources are almost identical, count is appropriate.
+-   If your resources are almost identical, the count is appropriate.
 -   If distinctive values are needed in the arguments, usage of `for_each` is needed.
 
 ### Data Type
@@ -331,7 +331,7 @@ _Points to Note_
 **List**
 
 -   Lists are used to store multiple items in a single variable.
--   List items are ordered, changeable, and allow duplicate values.
+-   List items that are ordered, changeable, and allow duplicate values.
 -   List items are indexed, the first item has index `[0]`, the second item has index `[1]`, etc.
 
     ```hcl
@@ -384,19 +384,19 @@ _Not included in current exam syllabus_
 
 We have been using Terraform to create and manage resources for a specific provider.
 
-Organizations would want end-to-end solution for creation of infrastructure and configuring appropriate packages required for the application.
+Organizations would want end-to-end solutions for creation of infrastructure and configuring appropriate packages required for the application.
 
 **Introducing Provisioners**
 
 -   Provisioners allow you to `execute scripts on a local or remote machine` as a part of resource creation or destruction.
 
--   Example: After VM is launched, install software package required for application.
+-   Example: After the VM is launched, install the software package required for the application.
 
 ### Type of Provisioners
 
 **Setting the Base**
 
-Provisioners are used to `execute scripts on a local or remote machine` as part of resource creation pr destruction.
+Provisioners are used to `execute scripts on a local or remote machine` as part of resource creation or destruction.
 
 There are 2-major types of provisioners:
 
@@ -407,7 +407,7 @@ There are 2-major types of provisioners:
 **Type 1 - local-exec provisioner**
 
 -   The local-exec provisioner invokes a local executable after a resource is created.
--   Example: After EC2 instance is launched, fetch the `ip` and store it in file `server_ip.txt`
+-   Example: After the EC2 instance is launched, fetch the `ip` and store it in file `server_ip.txt`
 
 **Type 2 - remote-exec provisioner**
 
@@ -419,7 +419,7 @@ There are 2-major types of provisioners:
 **Defining Provisioners**
 
 -   Provisioners are defined inside a specific resource.
--   Provisioners are defined by `provisioner` followed by the type od provisioner.
+-   Provisioners are defined by `provisioner` followed by the type of provisioner.
 
 **Local Exec Provisioner Approach**
 
@@ -427,18 +427,18 @@ There are 2-major types of provisioners:
 
 **Remote Exec Provisioner Approach**
 
--   Since commands executed are executed on remote-server, we have to provide way for terraform to connect to remote server.
+-   Since commands executed are executed on remote-server, we have to provide a way for Terraform to connect to the remote server.
 
 **Points to Note** -
 
 _Provisioners are Defined inside the Resource Block_
 
--   It is not necessary to define a `aws_instance` resource block for provisioner to run.
--   They can also be defined inside other resources types as well.
+-   It is not necessary to define an `aws_instance` resource block for the provisioner to run.
+-   They can also be defined inside other resource types as well.
 
 _Multiple Provisioner Blocks for Single Resources_
 
--   We can define multiple provisioners block in a single resource block.
+-   We can define multiple provisioner blocks in a single resource block.
 
 ### Creation-Time and Destroy-Time Provisioners
 
@@ -460,12 +460,12 @@ _Multiple Provisioner Blocks for Single Resources_
 
 ### Failure Behavior for Provisioners
 
-The `on_failure` setting can be used to change the default behavior.
+The `on_failure` setting can be used to change the default behaviour.
 
 | **Allowed Values** | **Description**                                                                                                 |
 | :----------------- | --------------------------------------------------------------------------------------------------------------- |
 | `continue`         | Ignore the error and continue with the creation or destruction.                                                 |
-| `fail`             | Raise an error and stop applying (the default behavior). If this is a creation provisioner, taint the resource. |
+| `fail`             | Raise an error and stop applying (the default behaviour). If this is a creation provisioner, taint the resource. |
 
 ## Terraform Modules
 
@@ -473,19 +473,19 @@ The `on_failure` setting can be used to change the default behavior.
 
 **Understanding the Basic** -
 
-In software engineering, `don't repeat yourself` (DRY) is a principle of software development aimed at reducing repetition of software patterns.
+In software engineering, `don't repeat yourself` (DRY) is a principle of software development aimed at reducing the repetition of software patterns.
 
 **Challenges** -
 
 1. Repetition of code.
-2. Change in AWS Provider specific option will require change in EC2 code blocks all the teams.
+2. Change in AWS Provider-specific option will require a change in EC2 code blocks for all the teams.
 3. Lack of standardization.
 4. Difficulty to manage.
 5. Difficult for developers to use.
 
 **Better Approach** -
 
--   In this approach, the DevOps team has defined standard Ec2 template in a central location that all can use.
+-   In this approach, the DevOps team has defined a standard Ec2 template in a central location that all can use.
 
 **Introducing Terraform Modules** -
 
@@ -530,13 +530,13 @@ Terraform registry can contain multiple modules for a specific infrastructure re
 
 **1 - Check total downloads**
 
--   Module downloads can provide early indication of level of acceptance by users in the Terraform community.
+-   Module downloads can provide an early indication of the level of acceptance by users in the Terraform community.
 
 **2 - Check the GitHub page of the Module**
 
--   GitHUb pages can provide important information related to the contributors, reported issues, and other data.
+-   GitHub pages can provide important information related to the contributors, reported issues, and other data.
 
-**3 - Avoid Modules written by individual participant**
+**3 - Avoid Modules written by individual participants**
 
 -   Avoid module that are maintained by a single contributor as regular updates, issues and other areas might not always be maintained.
 
@@ -544,13 +544,13 @@ Terraform registry can contain multiple modules for a specific infrastructure re
 
 -   Good documentation must include an overview, usage instructions, input and output variables, and examples.
 
-**5 - Check version history of Module**
+**5 - Check the version history of Module**
 
 -   Look at the version history. Frequent versions and a clear versioning strategy suggest active maintenance.
 
 **6 - Analyze the Code**
 
--   Inspect the module's source code on GitHub or another platform. Clean, well-structured code us a good sign.
+-   Inspect the module's source code on GitHub or another platform. Clean, well-structured code is a good sign.
 
 **7 - Check the community feedback**
 
@@ -563,7 +563,7 @@ Terraform registry can contain multiple modules for a specific infrastructure re
 **Important Point to Note**
 
 -   Avoid directly trying any random Terraform Module that is not actively maintained and looks shady(primarily by sole individual contributors)
--   An attacker can include malicious code in a module that sends information about environment to the attacker.
+-   An attacker can include malicious code in a module that sends information about the environment to the attacker.
 
 **Which modules do organizations use?**
 
@@ -575,7 +575,7 @@ Terraform registry can contain multiple modules for a specific infrastructure re
 **Understanding the Base**
 
 -   A base `modules` folder.
--   A sub-folder containing name for each modules that are available.
+-   A sub-folder containing the name of each module that is available.
 
 **What is Inside each Sub-Folders**
 
@@ -588,14 +588,14 @@ Terraform registry can contain multiple modules for a specific infrastructure re
 **Our Practical Structure**
 
 -   Our practical structure will include two main folders(modules and teams).
--   Modules sub-folder will contain sub-folder of modules that are available.
+-   Modules sub-folder will contain a sub-folder of available modules.
 -   Teams sub-folder will contain list of teams that we want to be made available.
 
 ### Module Sources - Calling a Module
 
 **Understanding the Base**
 
-Module source code can be present in wide variety of locations.
+Module source code can be present in a wide variety of locations.
 
 These include:
 
@@ -607,8 +607,8 @@ These include:
 
 **Base- Calling the Module**
 
--   In order to reference the module, you need to make use of `module` block.
--   The module block must contain tha source argument that contains location to the referenced module.
+-   To reference the module, you need to make use of the `module` block.
+-   The module block must contain the source argument that contains the location of the referenced module.
 
 **Example 1 - Local Paths**
 
@@ -628,56 +628,56 @@ These include:
 **Module Version**
 
 -   A specific module can have multiple versions
--   You can reference to specific version of module with the `version` block.
+-   You can reference to specific version of the module with the `version` block.
 
 ### Improvements in Custom Module Code
 
 **Our Simple Module**
 
--   We had created a very simple module that allows developers to launch an EC2 instance when calling the module.
+-   We created a very simple module that allows developers to launch an EC2 instance when calling the module.
 
 **Challenge 1 - Hardcoded Values**
 
 -   The values are hardcoded as part of the module.
--   If developer is calling the module, he will have to stick with same values.
--   Developer will not be able to override the hardcoded values of the module.
+-   If the developer is calling the module, he will have to stick with the same values.
+-   The developer will not be able to override the hardcoded values of the module.
 
 **Challenge 2 - Provider Improvements**
 
--   Avoid hard-coding region in the Module code as much as possible.
+-   Avoid hard-coding regions in the Module code as much as possible.
 -   A `required_provider` block with version control for module to work is important.
 
 ### Variables in Terraform Modules
 
 **Convert Hard-Coded values to Variables**
 
--   For modules, it is especially recommended to convert hard-coded values to `variables` so that it can be overridden based on user requirement.
+-   For modules, it is especially recommended to convert hard-coded values to `variables` so that they can be overridden based on user requirements.
 
 **Advantages of variables in module code**
 
--   Variable based approach allows teams to override the values.
+-   Variable-based approach allows teams to override the values.
 
 **Reviewing Professional EC2 Module Code**
 
--   Reviewing an EC2 module code that is professionally written, we see that the values associate with arguments are not hardcoded and variables were used extensively.
+-   Reviewing an EC2 module code that is professionally written, we see that the values associated with arguments are not hardcoded and variables were used extensively.
 
 ### Module Outputs
 
 **Revising Output Values**
 
--   `Output Values` make information about your infrastructure available on the command line, and can expose information for other Terraform configuration to use.
+-   `Output Values` make information about your infrastructure available on the command line and can expose information for other Terraform configurations to use.
 
 **Understanding the challenge**
 
--   If you want to create a resource that has an dependency on an infrastructure created through a module, you won't be able to implicitly call it without output values. In simpler terms, we can't get the ID of the instance while it's created, hence we create an output which helps us access the ID of the instance.
+-   If you want to create a resource that has a dependency on an infrastructure created through a module, you won't be able to implicitly call it without output values. In simpler terms, we can't get the ID of the instance while it's created, hence we create an output which helps us access the ID of the instance.
 
 **Accessing Child Module Outputs**
 
--   Ensure that include output values in the output code for better flexibility and integration with other resources and projects.
+-   Ensure that output values in the output code for better flexibility and integration with other resources and projects.
 
 **Revising Output Values**
 
--   `Output Values` make information about your infrastructure available on the command line, and can expose information for other Terraform configurations to use.
+-   `Output Values` make information about your infrastructure available on the command line and can expose information for other Terraform configurations to use.
 
 **Accessing Child Module Outputs**
 
@@ -699,7 +699,7 @@ These include:
 **Setting the Base**
 
 -   At this stage, we have been keeping the overall module structure very simple to understand the concepts.
--   In production environments, it is important to follow recommendation and best-practices set by HashiCorp.
+-   In production environments, it is important to follow recommendations and best practices set by HashiCorp.
 
 **Basic of Standard Module Structure**
 
@@ -712,7 +712,7 @@ These include:
 
 **Final Module Output** -
 
--   After reviewing the consumer team's requirement, the producer team has `broken up the application infrastructure in the following modules`:
+-   After reviewing the consumer team's requirement, the producer team has `broken up the application infrastructure into the following modules`:
     -   Network
     -   Web
     -   App
@@ -734,12 +734,12 @@ These include:
 | `GitHub`                    | The module must be on GitHub and must be a public repo. This is only a requirement for the public registry.                                                                  |
 | `Named`                     | Module repository must use this three-part name format `terraform-<PROVIDER>-<NAME>`.                                                                                        |
 | `Repository Description`    | The GitHub repository description is used to populate the short description of the module.                                                                                   |
-| `Standard Module Structure` | The module must adhere to standard module structure.                                                                                                                         |
+| `Standard Module Structure` | The module must adhere to the standard module structure.                                                                                                                         |
 | `x.y.x tags for releases`   | The registry uses tags to identify module versions. Release tag names must be a semantic version, which can often be prefixed with a `v.`. For example, `v1.0.4` and `0.9.2` |
 
 **Standard Module Structure** -
 
--   The standard module structure is a file and directory layout that is recommended for reuseable modules distributed in separate repositories.
+-   The standard module structure is a file and directory layout that is recommended for reusable modules distributed in separate repositories.
 -   There are 2 Primary formats -
     -   Minimal
     -   Complete
@@ -748,11 +748,11 @@ These include:
 
 **Setting the Base** -
 
--   An infrastructure created through Terraform is `tied to the` underlying Terraform configuration in state file.
+-   An infrastructure created through Terraform is `tied to the` underlying Terraform configuration in the state file.
 
 **What If?** -
 
--   What if we have multiple state files for single Terraform configuration?
+-   What if we have multiple state files for a single Terraform configuration?
 -   Can we manage different env's through it separately?
 
 **Introducing Terraform Workspaces** -
@@ -773,13 +773,13 @@ These include:
 | `.terraform`        | This file will be recreated when terraform init is run.               |
 | `terraform.tfvars`  | Likely to contain secretive data like username/passwords and secrets. |
 | `terraform.tfstate` | Should be stored in the remote site.                                  |
-| `crash.log`         | If terraform crashes, the logs are stored to file named `crash.log`   |
+| `crash.log`         | If terraform crashes, the logs are stored in the file named `crash.log`   |
 
 ### Terraform Backend
 
 **Basics of Backend** -
 
--   Backends primarily determine where Terraform stores it's state.
+-   Backends primarily determine where Terraform stores its state.
 -   By default, Terraform implicitly uses a backend called local to store state as a local file on disk.
 
 **Challenge with Local Backend** -
@@ -789,14 +789,14 @@ These include:
 
 **Ideal Architecture** -
 
-Following describes one of the recommended architecture -
+The following describes one of the recommended architectures -
 
 1. The Terraform code is stored in GIT Repository.
-2. The state file is stored in central backend.
+2. The state file is stored in the central backend.
 
 **Backends Supported in Terraform** -
 
--   Terraform supports multiple backends that allows remote service related operations.
+-   Terraform supports multiple backends that allow remote service-related operations.
 -   Some of the popular backends include:
     -   S3
     -   Consul
@@ -808,7 +808,7 @@ Following describes one of the recommended architecture -
 **Important Note** -
 
 -   Accessing state in a remote service generally requires some kind of access credentials
--   Some backends act like plain "remote disks" for state files; other support locking the state while operations are being performed, which helps prevent conflict and inconsistencies.
+-   Some backends act like plain "remote disks" for state files; others support locking the state while operations are being performed, which helps prevent conflict and inconsistencies.
 
 ### State Locking
 
@@ -821,27 +821,27 @@ Following describes one of the recommended architecture -
 
 -   State locking happens automatically on all operations that could write state. You won't see any message that it is happening.
 -   If state locking fails, terraform will not continue.
--   Not all backends support locking. The documentation of each backend includes details in whether it supports locking or not.
+-   Not all backends support locking. The documentation of each backend includes details on whether it supports locking or not.
 
 **Force Unlocking State** -
 
 -   Terraform has a `force-unlock` to manually unlock the state if the state locking failed.
 -   If you unlock the state when someone else is holding the lock it could cause multiple writers.
--   Force-Unlock should only be used to unlock your own lock in the situation where automatic unlocking failed.
+-   Force-Unlock should only be used to unlock your lock in the situation where automatic unlocking failed.
 
 ### Integrating DynamoDB with S3 for State Locking
 
 **State Locking in S3** -
 
--   By default, s3 does not support State Locking functionality
--   You need to make use of DynamoDB table to achieve state locking functionality.
+-   By default, s3 does not support State-Locking functionality
+-   You need to make use of the DynamoDB table to achieve state-locking functionality.
 
 ### Terraform State Management
 
 **Overview of State Modification** -
 
--   As your terraform usage becomes more advanced, there are some cases where you may need to modify the Terraform state.
--   It is important to modify the state file directly. Instead, make use of terraform state command.
+-   As your Terraform usage becomes more advanced, there are some cases where you may need to modify the Terraform state.
+-   It is important to modify the state file directly. Instead, make use of the Terraform state command.
 
 **Overview of State Modification** -
 
@@ -849,8 +849,8 @@ Following describes one of the recommended architecture -
 | :-------------------- | --------------------------------------------------------- |
 | `list`                | List resources in the terraform state file.               |
 | `mv`                  | Moves item with the terraform state.                      |
-| `pull`                | Manually download and output the state from remote state. |
-| `push`                | Manually upload a local state file to remote state.       |
+| `pull`                | Manually download and output the state from the remote state. |
+| `push`                | Manually upload a local state file to a remote state.       |
 | `rm`                  | Remove items from the Remote state.                       |
 | `show`                | Show the attributes of a single resource in the state.    |
 
@@ -862,7 +862,7 @@ Following describes one of the recommended architecture -
 
 -   The `terraform state mv` command is used to move items in a Terraform state file.
 -   This command is used in many cases in which you want to rename an existing resource without destroying or recreating it.
--   Due to destructive nature of this command, this command will output a backup copy of the state prior to saving any changes.
+-   Due to the destructive nature of this command, this command will output a backup copy of the state before saving any changes.
 -   Overall Syntax :
     ```hcl
     terraform state mv [options] SOURCE DESTINATION
@@ -883,7 +883,7 @@ Following describes one of the recommended architecture -
 -   The `terraform state rm` command is used to remove items from the Terraform State.
 -   Items removed from the Terraform state are not physically removed.
 -   Items removed from the Terraform state are only no longer managed by Terraform.
--   For example, if you remove an AWS instance from the state, the AWS instance will continue running, but Terraform plan will no longer see that instance.
+-   For example, if you remove an AWS instance from the state, the AWS instance will continue running, but the Terraform plan will no longer see that instance.
 
 **Sub Command - Show** -
 
@@ -893,15 +893,15 @@ Following describes one of the recommended architecture -
 
 **Setting up the Base** -
 
--   In larger enterprises, there can be multiple different teams working on different aspects of a infrastructure resource.
+-   In larger enterprises, there can be multiple different teams working on different aspects of an infrastructure resource.
 
 **Understanding the Challenge** -
 
--   Security team wants all the IP addresses added as part of output values in tfstate file of Networking Team project should be whitelisted in Firewall.
+-   The security team wants all the IP addresses added as part of output values in the tfstate file of the Networking Team project should be whitelisted in the Firewall.
 
 **What needs to be Achieved** -
 
-1. The code from security team project should connect to the terraform.tfstate file managed by the Networking Intern.
+1. The code from the security team project should connect to the terraform.tfstate file managed by the Networking Intern.
 2. The code should fetch all the IP addresses mentioned in the output values in the state file.
 3. The code should whitelist these IP addresses in Firewall rules.
 
@@ -914,12 +914,12 @@ Following describes one of the recommended architecture -
 **Typical Challenge** -
 
 -   It can happen that all the resources in an organization are created manually.
--   Organization now wants to start using Terraform and Manage these resources via Terraform.
+-   The organization now wants to start using Terraform and Manage these resources via Terraform.
 
 **Earlier Approach** -
 
--   In older approach, Terraform import would only create the state file associated with the resource running your environment.
--   USers still had to write tf files from scratch.
+-   In the older approach, Terraform import would only create the state file associated with the resource running your environment.
+-   Users still had to write tf files from scratch.
 
 **Newer Approach** -
 
@@ -952,7 +952,7 @@ Following describes one of the recommended architecture -
 
 **Setting the Base** -
 
--   By default, Terraform will show the values associated with defined attributes in the CLI output during plan, apply operations for most of the resources.
+-   By default, Terraform will show the values associated with defined attributes in the CLI output during the plan, and apply operations for most of the resources.
 
 **What to Expect** -
 
@@ -960,12 +960,12 @@ Following describes one of the recommended architecture -
 
 **Basics of Sensitive Parameter** -
 
--   Adding sensitive parameter ensures that you do not accidentally expose this data in CLI Output, log output
+-   Adding sensitive parameters ensures that you do not accidentally expose this data in CLI Output, log output
 
 **Sensitive Values and Output Values** -
 
 -   If you try to reference sensitive value in output value, Terraform will immediately give you an error.
--   If you still want sensitive value content to be available in "output" of the state file but should not be visible in CLI Output, Logs, following approach can be used: `sensitive = true`
+-   If you still want sensitive value content to be available in the "output" of the state file but should not be visible in CLI Output, Logs, the following approach can be used: `sensitive = true`
 
 **Important Point to Note** -
 
@@ -979,7 +979,7 @@ Following describes one of the recommended architecture -
 
 **Let's get started** -
 
--   HashiCorp Vault allows organization to secretly store secrets like tokens, passwords, certificates, along with access management for protecting secrets.
+-   HashiCorp Vault allows organizations to secretly store secrets like tokens, passwords,  and certificates, along with access management for protecting secrets.
 -   One of the common challenges nowadays in an organization is "Secrets Management".
 -   Secrets can include database passwords, AWS access/secret keys, API tokens, encryption keys, and others.
 
@@ -991,7 +991,7 @@ Following describes one of the recommended architecture -
 
 **Important Note** -
 
--   Interacting with vault from Terraform causes any secrets that you read and write to be persisted in both Terraform's state file.
+-   Interacting with a vault from Terraform causes any secrets that you read and write to be persisted in both Terraform's state files.
 
 ### Dependency Lock File
 
@@ -1002,22 +1002,22 @@ Following describes one of the recommended architecture -
 **Understanding the Challenge** -
 
 -   The AWS code written in Terraform is working perfectly well with AWS Plugin V1.
--   It can happen that same code might have some issues with newer AWS plugins.
+-   The same code might have some issues with newer AWS plugins.
 
 **Version Dependencies** -
 
--   Version constraints within the configurations itself determine the versions of dependencies are potentially compatible.
+-   Version constraints within the configurations themselves determine the versions of dependencies that are potentially compatible.
 -   After selecting a specific version of each dependency Terraform remembers the decisions it made in a dependency lock file so that it can (by default) make the same decisions again in the future.
 
 **Upgrading Option** -
 
--   If there is a requirement to use newer or downgrade a provider, can override that behavior by adding `-upgrade` option when you run `terraform init`, in which case Terraform will disregard the existing selections.
+-   If there is a requirement to use a newer or downgrade provider, can override that behaviour by adding the `-upgrade` option when you run `terraform init`, in which case Terraform will disregard the existing selections.
 
 **Points to Note** -
 
 -   When installing a particular provider for the first time, Terraform will pre-populate hashes value with any checksums that are covered by the provider developer's cryptographic signatures, which usually covers all of the available packages for the provider version across all supported platforms.
--   At present the dependency lock file, tracks only the provider dependencies.
--   Terraform does not remember the version selection for remote modules, and so Terraform will always select the newest available module version that meets the specified version constraints.
+-   At present, the dependency lock file, tracks only the provider dependencies.
+-   Terraform does not remember the version selection for remote modules, so Terraform will always select the newest available module version that meets the specified version constraints.
 
 ## Terraform Cloud & Enterprise Capabilities
 
@@ -1025,7 +1025,7 @@ Following describes one of the recommended architecture -
 
 **Overview of Terraform Cloud** -
 
--   Terraform cloud manages Terraform runs in a constant and reliable environment with various features like access controls, private registry for sharing modules, policy controls and others.
+-   Terraform Cloud manages Terraform runs in a constant and reliable environment with various features like access controls, private registry for sharing modules, policy controls and others.
 
 ### Overview of Sentinel
 
@@ -1033,7 +1033,7 @@ Following describes one of the recommended architecture -
 
 -   Sentinel is a policy-as-code framework integrated with the HashiCorp Enterprise products.
 -   It enables fine-grained, logic-based policy decisions, and can be extended to use information from external sources.
--   Note: Sentinel Policies are paid feature.
+-   Note: Sentinel Policies are a paid feature.
 
 Process:
 
@@ -1046,25 +1046,25 @@ Process:
 **Terraform Cloud - Backend Operation Types** -
 
 -   The remote backend stores Terraform state and may be used to run operations in Terraform Cloud.
--   Terraform cloud can also be used with local operations, in which case only state is stored in the Terraform cloud backend.
+-   Terraform cloud can also be used with local operations, in which case only the state is stored in the Terraform cloud backend.
 
 **Remote Operations** -
 
 -   When using full remote operations, like terraform plan or terraform apply can be executed in Terraform cloud's run environment, with log output streaming to the local terminal.
 
-### Air Gapped Environment
+### Air-Gapped Environment
 
 **Understanding Concept of Air Gap** -
 
--   An air gap is a network security measure employed to ensure that a computer network is physically isolated from unsecured networks, such as public internet.
+-   An air gap is a network security measure employed to ensure that a computer network is physically isolated from unsecured networks, such as public Internet.
 
-**Usage of Air Gapped Systems** -
+**Usage of Air-Gapped Systems** -
 
--   Air gapped environments are used in various areas. Some of these include:
+-   Air-gapped environments are used in various areas. Some of these include:
     -   Military/Governmental Computer Networks/Systems
     -   Financial Computer Systems, such as stock exchanges
     -   Industrial control systems, such as SCADA in Oil & Gas fields.
 
 **Terraform Enterprise Installation Method** -
 
--   Terraform enterprise installs either using an online or air gapped method and as the names infer, one requires internet connectivity, the other does not.
+-   Terraform enterprise installs either using an online or air-gapped method and as the names infer, one requires internet connectivity, the other does not.
