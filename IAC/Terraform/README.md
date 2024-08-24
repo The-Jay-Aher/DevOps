@@ -60,7 +60,7 @@ Terraform loads variables in the following order, with the later sources taking 
 
 -   The count argument accepts a whole number and creates many instances of the resource.
 
-    ```terraform
+    ```hcl
     resource "aws_instance" "myEC2" {
     ami           = "ami-068e0f1a600cd311c"
     instance_type = "t2.micro"
@@ -334,7 +334,7 @@ _Points to Note_
 -   List items are ordered, changeable, and allow duplicate values.
 -   List items are indexed, the first item has index `[0]`, the second item has index `[1]`, etc.
 
-    ```terraform
+    ```hcl
     variable "iam_names" {
     type    = list(string)
     default = ["user-01", "user-02", "user-03"]
@@ -353,7 +353,7 @@ _toset Function_ - `toset` function will convert a list of values to set.
 
 -   `for_each` makes use of map/set as an index value of the created resource.
 
-    ```terraform
+    ```hcl
     resource "aws_iam_user" "iam" {
     for_each = toset(["user-01", "user=02", "user-03"])
     name     = each.key
@@ -493,7 +493,7 @@ In software engineering, `don't repeat yourself` (DRY) is a principle of softwar
 
 Example -
 
-```terraform
+```hcl
 module "e2_instance" {
     source = "terraform-aws-modules/ec2-instance/aws"
 }
@@ -619,7 +619,7 @@ These include:
 
 -   Arbitrary Git repositories can be used by prefixing with the special `git::` prefix.
 
-    ```terraform
+    ```hcl
         module "vpc" {
             source = "git::https://example.com/vpc.git"
         }
@@ -729,13 +729,13 @@ These include:
 
 **Requirement for Publishing Module** -
 
-| **Requirement**           | **Description**                                                                                                                                                              |
-| :------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| GitHub                    | The module must be on GitHub and must be a public repo. This is only a requirement for the public registry.                                                                  |
-| Named                     | Module repository must use this three-part name format `terraform-<PROVIDER>-<NAME>`.                                                                                        |
-| Repository Description    | The GitHub repository description is used to populate the short description of the module.                                                                                   |
-| Standard Module Structure | The module must adhere to standard module structure.                                                                                                                         |
-| x.y.x tags for releases   | The registry uses tags to identify module versions. Release tag names must be a semantic version, which can often be prefixed with a `v.`. For example, `v1.0.4` and `0.9.2` |
+| **Requirement**             | **Description**                                                                                                                                                              |
+| :-------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GitHub`                    | The module must be on GitHub and must be a public repo. This is only a requirement for the public registry.                                                                  |
+| `Named`                     | Module repository must use this three-part name format `terraform-<PROVIDER>-<NAME>`.                                                                                        |
+| `Repository Description`    | The GitHub repository description is used to populate the short description of the module.                                                                                   |
+| `Standard Module Structure` | The module must adhere to standard module structure.                                                                                                                         |
+| `x.y.x tags for releases`   | The registry uses tags to identify module versions. Release tag names must be a semantic version, which can often be prefixed with a `v.`. For example, `v1.0.4` and `0.9.2` |
 
 **Standard Module Structure** -
 
@@ -770,10 +770,10 @@ These include:
 
 | **Files to Ignore** | **Description**                                                       |
 | :------------------ | --------------------------------------------------------------------- |
-| .terraform          | This file will be recreated when terraform init is run.               |
-| terraform.tfvars    | Likely to contain secretive data like username/passwords and secrets. |
-| terraform.tfstate   | Should be stored in the remote site.                                  |
-| crash.log           | If terraform crashes, the logs are stored to file named `crash.log`   |
+| `.terraform`        | This file will be recreated when terraform init is run.               |
+| `terraform.tfvars`  | Likely to contain secretive data like username/passwords and secrets. |
+| `terraform.tfstate` | Should be stored in the remote site.                                  |
+| `crash.log`         | If terraform crashes, the logs are stored to file named `crash.log`   |
 
 ### Terraform Backend
 
@@ -809,3 +809,245 @@ Following describes one of the recommended architecture -
 
 -   Accessing state in a remote service generally requires some kind of access credentials
 -   Some backends act like plain "remote disks" for state files; other support locking the state while operations are being performed, which helps prevent conflict and inconsistencies.
+
+### State Locking
+
+**Understanding State Lock** -
+
+-   Whenever you are performing write operation, terraform will lock the state file.
+-   This is very important as otherwise during your ongoing terraform apply operations, if others also try the same it can corrupt your state file.
+
+**Important Note** -
+
+-   State locking happens automatically on all operations that could write state. You won't see any message that it is happening.
+-   If state locking fails, terraform will not continue.
+-   Not all backends support locking. The documentation of each backend includes details in whether it supports locking or not.
+
+**Force Unlocking State** -
+
+-   Terraform has a `force-unlock` to manually unlock the state if the state locking failed.
+-   If you unlock the state when someone else is holding the lock it could cause multiple writers.
+-   Force-Unlock should only be used to unlock your own lock in the situation where automatic unlocking failed.
+
+### Integrating DynamoDB with S3 for State Locking
+
+**State Locking in S3** -
+
+-   By default, s3 does not support State Locking functionality
+-   You need to make use of DynamoDB table to achieve state locking functionality.
+
+### Terraform State Management
+
+**Overview of State Modification** -
+
+-   As your terraform usage becomes more advanced, there are some cases where you may need to modify the Terraform state.
+-   It is important to modify the state file directly. Instead, make use of terraform state command.
+
+**Overview of State Modification** -
+
+| **State Sub Command** | **Description**                                           |
+| :-------------------- | --------------------------------------------------------- |
+| `list`                | List resources in the terraform state file.               |
+| `mv`                  | Moves item with the terraform state.                      |
+| `pull`                | Manually download and output the state from remote state. |
+| `push`                | Manually upload a local state file to remote state.       |
+| `rm`                  | Remove items from the Remote state.                       |
+| `show`                | Show the attributes of a single resource in the state.    |
+
+**Sub Command - List** -
+
+-   The `terraform state list` command is used to list resources within a Terraform state.
+
+**Sub Command - Move** -
+
+-   The `terraform state mv` command is used to move items in a Terraform state file.
+-   This command is used in many cases in which you want to rename an existing resource without destroying or recreating it.
+-   Due to destructive nature of this command, this command will output a backup copy of the state prior to saving any changes.
+-   Overall Syntax :
+    ```hcl
+    terraform state mv [options] SOURCE DESTINATION
+    ```
+
+**Sub Command - Pull** -
+
+-   The `terraform state pull` command is used to manually download and output the state from remote state,
+-   This is useful for reading values out of state (potentially pairing this command with something like jq).
+
+**Sub Command - Push** -
+
+-   The `terraform state push` command is used to manually upload a local file to remote state.
+-   This command should rarely be used.
+
+**Sub Command - Remove** -
+
+-   The `terraform state rm` command is used to remove items from the Terraform State.
+-   Items removed from the Terraform state are not physically removed.
+-   Items removed from the Terraform state are only no longer managed by Terraform.
+-   For example, if you remove an AWS instance from the state, the AWS instance will continue running, but Terraform plan will no longer see that instance.
+
+**Sub Command - Show** -
+
+-   The `terraform state show` command is used to show the attributes of a single resource in the Terraform state.
+
+### Cross-Project Collaboration using Remote State Data source
+
+**Setting up the Base** -
+
+-   In larger enterprises, there can be multiple different teams working on different aspects of a infrastructure resource.
+
+**Understanding the Challenge** -
+
+-   Security team wants all the IP addresses added as part of output values in tfstate file of Networking Team project should be whitelisted in Firewall.
+
+**What needs to be Achieved** -
+
+1. The code from security team project should connect to the terraform.tfstate file managed by the Networking Intern.
+2. The code should fetch all the IP addresses mentioned in the output values in the state file.
+3. The code should whitelist these IP addresses in Firewall rules.
+
+### Remote State Data Source
+
+-   The `terraform_remote_state` data source allows us to fetch values from a specified state backend.
+
+### Terraform Import
+
+**Typical Challenge** -
+
+-   It can happen that all the resources in an organization are created manually.
+-   Organization now wants to start using Terraform and Manage these resources via Terraform.
+
+**Earlier Approach** -
+
+-   In older approach, Terraform import would only create the state file associated with the resource running your environment.
+-   USers still had to write tf files from scratch.
+
+**Newer Approach** -
+
+-   In the newer approach, `terraform import` can automatically create the terraform configuration files for the resources you want to import.
+-   Both the configuration file and the state file will be generated by the command.
+
+**Point to Note** -
+
+-   `Terraform 1.5.0` introduces automatic code generation for imported resources.
+-   This dramatically reduces the amount of time you need to spend writing code to match the imported.
+-   This feature is not available in the older versions of Terraform.
+
+## Security Primer
+
+### Multiple Provider Configuration
+
+**Understanding the Requirement** -
+
+-   There can be a requirement that multiple resource types in the same TF file need to be delayed in separate regions.
+
+**Setting the Base** -
+
+-   At this stage, we have been dealing with single-provider configuration.
+
+**Alias Meta-Argument** -
+
+-   Each provider can have one default configuration, and `any number of alternate configurations` that include an extra name segment (or `alias`).
+
+### Sensitive Parameter
+
+**Setting the Base** -
+
+-   By default, Terraform will show the values associated with defined attributes in the CLI output during plan, apply operations for most of the resources.
+
+**What to Expect** -
+
+-   We should design our Terraform code, in such a way that no sensitive information is available and shown out of the box in CLI Output, Logs, etc.
+
+**Basics of Sensitive Parameter** -
+
+-   Adding sensitive parameter ensures that you do not accidentally expose this data in CLI Output, log output
+
+**Sensitive Values and Output Values** -
+
+-   If you try to reference sensitive value in output value, Terraform will immediately give you an error.
+-   If you still want sensitive value content to be available in "output" of the state file but should not be visible in CLI Output, Logs, following approach can be used: `sensitive = true`
+
+**Important Point to Note** -
+
+-   Sensitive parameter will NOT protect/redact information from state file.
+
+**Benefits of Mature Providers** -
+
+-   Various providers like AWS will automatically considers the password argument for any database instance as sensitive and will redact it as a sensitive value.
+
+### Overview of HashiCorp Vault
+
+**Let's get started** -
+
+-   HashiCorp Vault allows organization to secretly store secrets like tokens, passwords, certificates, along with access management for protecting secrets.
+-   One of the common challenges nowadays in an organization is "Secrets Management".
+-   Secrets can include database passwords, AWS access/secret keys, API tokens, encryption keys, and others.
+
+### Terraform and Vault Integration
+
+**Vault Provider** -
+
+-   The vault provider allows Terraform to read from, write to, and configure HashiCorp Vault.
+
+**Important Note** -
+
+-   Interacting with vault from Terraform causes any secrets that you read and write to be persisted in both Terraform's state file.
+
+### Dependency Lock File
+
+**Revising the Basics** -
+
+-   Provider plugins and Terraform are managed independently and have different release cycles.
+
+**Understanding the Challenge** -
+
+-   The AWS code written in Terraform is working perfectly well with AWS Plugin V1.
+-   It can happen that same code might have some issues with newer AWS plugins.
+
+**Version Dependencies** -
+
+-   Version constraints within the configurations itself determine the versions of dependencies are potentially compatible.
+-   After selecting a specific version of each dependency Terraform remembers the decisions it made in a dependency lock file so that it can (by default) make the same decisions again in the future.
+
+**Upgrading Option** -
+
+-   If there is a requirement to use newer or downgrade a provider, can override that behavior by adding `-upgrade` option when you run `terraform init`, in which case Terraform will disregard the existing selections.
+
+**Points to Note** -
+
+-   When installing a particular provider for the first time, Terraform will pre-populate hashes value with any checksums that are covered by the provider developer's cryptographic signatures, which usually covers all of the available packages for the provider version across all supported platforms.
+-   At present the dependency lock file, tracks only the provider dependencies.
+-   Terraform does not remember the version selection for remote modules, and so Terraform will always select the newest available module version that meets the specified version constraints.
+
+## Terraform Cloud & Enterprise Capabilities
+
+### Overview of Terraform Cloud
+
+**Overview of Terraform Cloud** -
+
+-   Terraform cloud manages Terraform runs in a constant and reliable environment with various features like access controls, private registry for sharing modules, policy controls and others.
+
+### Overview of Sentinel
+
+**Overview of Sentinel** -
+
+-   Sentinel is a policy-as-code framework integrated with the HashiCorp Enterprise products.
+-   It enables fine-grained, logic-based policy decisions, and can be extended to use information from external sources.
+-   Note: Sentinel Policies are paid feature.
+
+Process:
+
+1. `terraform plan`
+2. `sentinel checks`
+3. `terraform apply`
+
+### Remote Backend
+
+**Terraform Cloud - Backend Operation Types** -
+
+-   The remote backend stores Terraform state and may be used to run operations in Terraform Cloud.
+-   Terraform cloud can also be used with local operations, in which case only state is stored in the Terraform cloud backend.
+
+**Remote Operations** -
+
+-   When using full remote operations, like terraform plan or terraform apply can be executed in Terraform cloud's run environment, with log output streaming to the local terminal.
