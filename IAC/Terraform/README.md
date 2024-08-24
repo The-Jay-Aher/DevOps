@@ -258,7 +258,7 @@ _Use-Case of Saving Plan to a File_
     |  **Type**   | **Description**                                                                   |
     | :---------: | --------------------------------------------------------------------------------- |
     |     `#`     | begins a single-line comment, ending at the end of the line (recommended over //) |
-    |    `//`     | also begins as a single-line comment, as an alternative to #                       |
+    |    `//`     | also begins as a single-line comment, as an alternative to #                      |
     | `/_ and _/` | are start and end delimiters for a comment that might span over multiple lines    |
 
 ### Resource Behavior and Meta Arguments
@@ -280,12 +280,12 @@ _Use-Case of Saving Plan to a File_
 
 **Different Meta Arguments**
 
-| **Meta-Argument** | **Description**                                                                                                                                           |
-| :---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `depends_on`      | Handle hidden resources or module dependencies that Terraform automatically cannot infer                                                                  |
-| `count`           | Accepts a whole number, and creates that many instances of the resource                                                                                    |
-| `for_each`        | Accepts a map or a set of strings, and creates an instance for each item in that map or set                                                               |
-| `lifecycle`       | Allows modification to resource lifecycle                                                                                                                 |
+| **Meta-Argument** | **Description**                                                                                                                                         |
+| :---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `depends_on`      | Handle hidden resources or module dependencies that Terraform automatically cannot infer                                                                |
+| `count`           | Accepts a whole number, and creates that many instances of the resource                                                                                 |
+| `for_each`        | Accepts a map or a set of strings, and creates an instance for each item in that map or set                                                             |
+| `lifecycle`       | Allows modification to resource lifecycle                                                                                                               |
 | `provider`        | Specifies which provider configuration to use for a resource, overriding Terraform's default behaviour of selecting one based on the resource type name |
 
 ### Meta-Argument - Lifecycle
@@ -294,10 +294,10 @@ _Use-Case of Saving Plan to a File_
 
 | **Arguments**           | **Description**                                                                                                      |
 | :---------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `create_before_destroy` | A new replacement is created first, and the prior object is destroyed after the replacement is created                 |
+| `create_before_destroy` | A new replacement is created first, and the prior object is destroyed after the replacement is created               |
 | `prevent_destroy`       | Terraform to reject with an error any plan that would destroy the infrastructure object associated with the resource |
 | `ignore_changes`        | Ignore certain changes to the live resource that does not match the configuration                                    |
-| `replace_triggered_by`  | Replaces the resources when any of the referenced items change                                                        |
+| `replace_triggered_by`  | Replaces the resources when any of the referenced items change                                                       |
 
 **Lifecycle Meta-Argument - Create Before Destroy**
 
@@ -462,9 +462,9 @@ _Multiple Provisioner Blocks for Single Resources_
 
 The `on_failure` setting can be used to change the default behaviour.
 
-| **Allowed Values** | **Description**                                                                                                 |
-| :----------------- | --------------------------------------------------------------------------------------------------------------- |
-| `continue`         | Ignore the error and continue with the creation or destruction.                                                 |
+| **Allowed Values** | **Description**                                                                                                  |
+| :----------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `continue`         | Ignore the error and continue with the creation or destruction.                                                  |
 | `fail`             | Raise an error and stop applying (the default behaviour). If this is a creation provisioner, taint the resource. |
 
 ## Terraform Modules
@@ -734,7 +734,7 @@ These include:
 | `GitHub`                    | The module must be on GitHub and must be a public repo. This is only a requirement for the public registry.                                                                  |
 | `Named`                     | Module repository must use this three-part name format `terraform-<PROVIDER>-<NAME>`.                                                                                        |
 | `Repository Description`    | The GitHub repository description is used to populate the short description of the module.                                                                                   |
-| `Standard Module Structure` | The module must adhere to the standard module structure.                                                                                                                         |
+| `Standard Module Structure` | The module must adhere to the standard module structure.                                                                                                                     |
 | `x.y.x tags for releases`   | The registry uses tags to identify module versions. Release tag names must be a semantic version, which can often be prefixed with a `v.`. For example, `v1.0.4` and `0.9.2` |
 
 **Standard Module Structure** -
@@ -768,12 +768,12 @@ These include:
 -   The `.gitignore` file is a text file that tells Git which files or folders to ignore in a project.
 -   Depending on the environment, it is recommended to avoid committing certain files to GIT.
 
-| **Files to Ignore** | **Description**                                                       |
-| :------------------ | --------------------------------------------------------------------- |
-| `.terraform`        | This file will be recreated when terraform init is run.               |
-| `terraform.tfvars`  | Likely to contain secretive data like username/passwords and secrets. |
-| `terraform.tfstate` | Should be stored in the remote site.                                  |
-| `crash.log`         | If terraform crashes, the logs are stored in the file named `crash.log`   |
+| **Files to Ignore** | **Description**                                                         |
+| :------------------ | ----------------------------------------------------------------------- |
+| `.terraform`        | This file will be recreated when terraform init is run.                 |
+| `terraform.tfvars`  | Likely to contain secretive data like username/passwords and secrets.   |
+| `terraform.tfstate` | Should be stored in the remote site.                                    |
+| `crash.log`         | If terraform crashes, the logs are stored in the file named `crash.log` |
 
 ### Terraform Backend
 
@@ -845,14 +845,14 @@ The following describes one of the recommended architectures -
 
 **Overview of State Modification** -
 
-| **State Sub Command** | **Description**                                           |
-| :-------------------- | --------------------------------------------------------- |
-| `list`                | List resources in the terraform state file.               |
-| `mv`                  | Moves item with the terraform state.                      |
+| **State Sub Command** | **Description**                                               |
+| :-------------------- | ------------------------------------------------------------- |
+| `list`                | List resources in the terraform state file.                   |
+| `mv`                  | Moves item with the terraform state.                          |
 | `pull`                | Manually download and output the state from the remote state. |
-| `push`                | Manually upload a local state file to a remote state.       |
-| `rm`                  | Remove items from the Remote state.                       |
-| `show`                | Show the attributes of a single resource in the state.    |
+| `push`                | Manually upload a local state file to a remote state.         |
+| `rm`                  | Remove items from the Remote state.                           |
+| `show`                | Show the attributes of a single resource in the state.        |
 
 **Sub Command - List** -
 
@@ -979,7 +979,7 @@ The following describes one of the recommended architectures -
 
 **Let's get started** -
 
--   HashiCorp Vault allows organizations to secretly store secrets like tokens, passwords,  and certificates, along with access management for protecting secrets.
+-   HashiCorp Vault allows organizations to secretly store secrets like tokens, passwords, and certificates, along with access management for protecting secrets.
 -   One of the common challenges nowadays in an organization is "Secrets Management".
 -   Secrets can include database passwords, AWS access/secret keys, API tokens, encryption keys, and others.
 
