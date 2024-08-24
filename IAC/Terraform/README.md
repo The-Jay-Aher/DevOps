@@ -1051,3 +1051,20 @@ Process:
 **Remote Operations** -
 
 -   When using full remote operations, like terraform plan or terraform apply can be executed in Terraform cloud's run environment, with log output streaming to the local terminal.
+
+### Air Gapped Environment
+
+**Understanding Concept of Air Gap** -
+
+-   An air gap is a network security measure employed to ensure that a computer network is physically isolated from unsecured networks, such as public internet.
+
+**Usage of Air Gapped Systems** -
+
+-   Air gapped environments are used in various areas. Some of these include:
+    -   Military/Governmental Computer Networks/Systems
+    -   Financial Computer Systems, such as stock exchanges
+    -   Industrial control systems, such as SCADA in Oil & Gas fields.
+
+**Terraform Enterprise Installation Method** -
+
+-   Terraform enterprise installs either using an online or air gapped method and as the names infer, one requires internet connectivity, the other does not.
