@@ -5,6 +5,6 @@ module "consul" {
 }
 
 resource "aws_eip" "IpAddress" {
-  domain = "vpc"
+  domain   = "vpc"
   instance = module.consul.instance_id
 }

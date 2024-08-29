@@ -49,9 +49,9 @@ resource "aws_security_group" "mySG" {
   name                   = "Manual-Creation"
   name_prefix            = null
   revoke_rules_on_delete = null
-  tags                   = {
+  tags = {
     Name = "Terraform-SG"
   }
-  tags_all               = {}
-  vpc_id                 = "vpc-0e745197c4c462b3c"
+  tags_all = {}
+  vpc_id   = "vpc-0e745197c4c462b3c"
 }
